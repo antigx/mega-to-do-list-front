@@ -1,0 +1,14 @@
+@import "tailwindcss";
+
+:root {
+  --font-heading: 'Inria Serif', serif;
+  --font-body: 'Poppins', sans-serif;
+}
+
+@theme {
+  --color-gray-primary: #D9D9D9;
+}
+
+.icon-hover {
+  @apply transition-transform duration-200 hover:scale-110 /* hover:translate-x-1 */;
+}
