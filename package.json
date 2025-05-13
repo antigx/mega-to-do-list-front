@@ -3,7 +3,7 @@
   "private": true,
   "version": "0.0.0",
   "type": "module",
-  "homepage": "https://antigx.github.io/mega-to-do-list-front/",
+  "homepage": "https://GustavoVasconcelos02.github.io/mega-to-do-list-front/",
   "scripts": {
     "dev": "vite",
     "build": "tsc -b && vite build",
