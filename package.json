@@ -9,14 +9,16 @@
     "build": "tsc -b && vite build",
     "lint": "eslint .",
     "preview": "vite preview",
-    "predeploy": "npm run build", 
-    "deploy": "gh-pages -d dist"  
+    "predeploy": "vite build",
+    "deploy": "gh-pages -d dist -u \"github-actions-bot <github-actions@github.com>\" --repo https://x-access-token:${GITHUB_TOKEN}@github.com/antigx/mega-to-do-list-front.git"
   },
   "dependencies": {
     "@tailwindcss/vite": "^4.1.5",
     "lucide-react": "^0.507.0",
     "react": "^19.1.0",
-    "react-dom": "^19.1.0"
+    "react-circular-progressbar": "^2.2.0",
+    "react-dom": "^19.1.0",
+    "react-router-dom": "^7.6.0"
   },
   "devDependencies": {
     "@eslint/js": "^9.25.0",

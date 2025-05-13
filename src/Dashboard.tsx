@@ -1,8 +1,7 @@
-import Navbar from "./components/Navbar";
+import GroupTask from "./components/GroupTask";
 import TaskCard from "./components/TaskCard";
 import TodayTasks from "./components/TodayTasks";
 import type { Task } from "./types/Task";
-
 
 const tasks: Task[] = [
   {
@@ -77,42 +76,35 @@ const tasks: Task[] = [
   },
 ];
 
-
-
-
 export default function Dashboard() {
   return (
-    <div className="flex h-screen bg-gray-100">
-      <Navbar />
-
-      <main className="flex-1 p-6 overflow-y-auto">
-        <div className="flex items-center gap-4">
-{/*           <Image
+    <main className="flex-1 p-6 overflow-y-auto">
+      <div className="flex items-center gap-4">
+        {/*           <Image
             src="/profile.jpg"
             alt="Profile"
             width={40}
             height={40}
             className="rounded-full"
           /> */}
-          <h2 className="text-xl font-semibold">Olá, Jubileu!</h2>
-        </div>
+        <h2 className="text-xl font-semibold">Olá, Jubileu!</h2>
+      </div>
 
-        <TodayTasks />
+      <TodayTasks />
 
-        <div className="mt-4">
-          <input
-            type="text"
-            placeholder="Pesquisar"
-            className="w-full max-w-sm px-4 py-2 border rounded"
-          />
-        </div>
-
-        <div className="mt-6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 mb-14 sm:mb-0">
-          {tasks.map((task: Task, i: number) => (
-            <TaskCard key={i} task={task} />
-          ))}
-        </div>
-      </main>
-    </div>
+      <div className="mt-4">
+        <input
+          type="text"
+          placeholder="Pesquisar"
+          className="w-full max-w-sm px-4 py-2 border rounded"
+        />
+      </div>
+      <GroupTask />
+      <div className="mt-6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 mb-14 sm:mb-0">
+        {tasks.map((task: Task, i: number) => (
+          <TaskCard key={i} task={task} />
+        ))}
+      </div>
+    </main>
   );
 }
