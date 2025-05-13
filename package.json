@@ -7,7 +7,9 @@
     "dev": "vite",
     "build": "tsc -b && vite build",
     "lint": "eslint .",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "predeploy": "vite build",
+    "deploy": "gh-pages -d dist -u \"github-actions-bot <github-actions@github.com>\" --repo https://x-access-token:${GITHUB_TOKEN}@github.com/antigx/mega-to-do-list-front.git"
   },
   "dependencies": {
     "@tailwindcss/vite": "^4.1.5",
@@ -25,6 +27,7 @@
     "eslint": "^9.25.0",
     "eslint-plugin-react-hooks": "^5.2.0",
     "eslint-plugin-react-refresh": "^0.4.19",
+    "gh-pages": "^6.3.0",
     "globals": "^16.0.0",
     "typescript": "~5.8.3",
     "typescript-eslint": "^8.30.1",

@@ -1,5 +1,4 @@
 import GroupTask from "./components/GroupTask";
-import Navbar from "./components/Navbar";
 import TaskCard from "./components/TaskCard";
 import TodayTasks from "./components/TodayTasks";
 import type { Task } from "./types/Task";
