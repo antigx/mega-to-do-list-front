@@ -13,6 +13,7 @@
     "deploy": "gh-pages -d dist -u \"github-actions-bot <github-actions@github.com>\" --repo https://x-access-token:${GITHUB_TOKEN}@github.com/antigx/mega-to-do-list-front.git"
   },
   "dependencies": {
+    "@react-oauth/google": "^0.12.2",
     "@tailwindcss/vite": "^4.1.5",
     "lucide-react": "^0.507.0",
     "react": "^19.1.0",

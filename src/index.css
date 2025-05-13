@@ -1,3 +1,4 @@
+@import url('https://fonts.googleapis.com/css2?family=Inria+Serif:ital,wght@0,300;0,400;0,700;1,300;1,400;1,700&display=swap');
 @import "tailwindcss";
 
 :root {
@@ -6,7 +7,16 @@
 }
 
 @theme {
+
+  /* Font families */
+  --font-family-heading: 'Inria Serif', serif;
+  --font-family-body: 'Poppins', sans-serif;
+
+  /* Colors */
   --color-gray-primary: #D9D9D9;
+  --color-gray-secondary: #333333;
+  
+
 }
 
 .icon-hover {
