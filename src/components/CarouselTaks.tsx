@@ -3,8 +3,6 @@ import TaskCard from "./TaskCard";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Autoplay, Pagination, Navigation } from "swiper/modules";
 import "swiper/css";
-import "swiper/css/pagination";
-import "swiper/css/navigation";
 
 export default function CarouselTasks({ tasks }: { tasks: Task[] }) {
     return (
@@ -15,6 +13,7 @@ export default function CarouselTasks({ tasks }: { tasks: Task[] }) {
                 slidesPerView={1.5}
                 pagination={{
                     clickable: true,
+                    el: ".swiper-pagination",
                     dynamicBullets: true,
                 }}
                 navigation={{

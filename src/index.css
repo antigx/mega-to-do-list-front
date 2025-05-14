@@ -1,24 +1,21 @@
-@import url('https://fonts.googleapis.com/css2?family=Inria+Serif:ital,wght@0,300;0,400;0,700;1,300;1,400;1,700&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Inria+Serif:ital,wght@0,300;0,400;0,700;1,300;1,400;1,700&display=swap");
 @import "tailwindcss";
 
 :root {
-  --font-heading: 'Inria Serif', serif;
-  --font-body: 'Poppins', sans-serif;
+    --font-heading: "Inria Serif", serif;
+    --font-body: "Poppins", sans-serif;
 }
 
 @theme {
+    /* Font families */
+    --font-family-heading: "Inria Serif", serif;
+    --font-family-body: "Poppins", sans-serif;
 
-  /* Font families */
-  --font-family-heading: 'Inria Serif', serif;
-  --font-family-body: 'Poppins', sans-serif;
-
-  /* Colors */
-  --color-gray-primary: #D9D9D9;
-  --color-gray-secondary: #333333;
-  
-
+    /* Colors */
+    --color-gray-primary: #d9d9d9;
+    --color-gray-secondary: #333333;
 }
 
 .icon-hover {
-  @apply transition-transform duration-200 hover:scale-110 /* hover:translate-x-1 */;
+    @apply transition-transform duration-200 hover:scale-110 /* hover:translate-x-1 */;
 }
