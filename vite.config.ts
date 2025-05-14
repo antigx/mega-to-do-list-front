@@ -4,6 +4,9 @@ import tailwindcss from "@tailwindcss/vite";
 
 // https://vite.dev/config/
 export default defineConfig({
-  base: "/mega-to-do-list-front/",
-  plugins: [react(), tailwindcss()],
+    base: "/mega-to-do-list-front/",
+    plugins: [react(), tailwindcss()],
+    optimizeDeps: {
+        include: ["swiper"],
+    },
 });
