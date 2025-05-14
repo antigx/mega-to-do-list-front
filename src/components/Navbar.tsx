@@ -6,18 +6,18 @@ export default function Navbar() {
       className="text-white bg-[#333333] 
       rounded-t-3xl sm:rounded-none sm:rounded-r-3xl
       w-full sm:w-20 h-16 sm:h-full shadow-lg
-      flex sm:flex-col justify-center items-center
+      flex sm:flex-col justify-evenly items-center
       fixed bottom-0 left-0 sm:relative
-      px-4 sm:px-0 sm:py-6 gap-15 sm:gap-20 z-40"
+      px-4 sm:px-0 sm:py-6 sm:gap-15 z-40"
     >
       {/* Ícones regulares */}
       <Home
         size={35}
-        className="opacity-80 hover:opacity-100 transition-opacity"
+        className="opacity-80 hover:opacity-100 transition-opacity min-w-10"
       />
       <Calendar
         size={35}
-        className="opacity-80 hover:opacity-100 transition-opacity"
+        className="opacity-80 hover:opacity-100 transition-opacity min-w-10"
       />
 
       {/* Botão central destacado */}
@@ -26,7 +26,7 @@ export default function Navbar() {
           className="bg-[#333333] text-white p-4 rounded-full 
         shadow-xl transition-all transform 
         border-1 border-white z-50
-        w-20 h-20 flex items-center justify-center
+        min-w-10 min-h-10 flex items-center justify-center
         origin-bottom
         sm:origin-left
         hover:w-[95px] hover:h-[95px]
@@ -41,11 +41,11 @@ export default function Navbar() {
       {/* Ícones regulares */}
       <ClipboardList
         size={35}
-        className="opacity-80 hover:opacity-100 transition-opacity"
+        className="opacity-80 hover:opacity-100 transition-opacity min-w-10"
       />
       <User
         size={35}
-        className="opacity-80 hover:opacity-100 transition-opacity"
+        className="opacity-80 hover:opacity-100 transition-opacity min-w-10"
       />
     </aside>
   );
