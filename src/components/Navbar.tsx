@@ -1,4 +1,5 @@
 import { Home, Calendar, Plus, ClipboardList, User } from "lucide-react";
+import { NavLink } from "react-router-dom";
 
 export default function Navbar() {
   return (
@@ -11,14 +12,34 @@ export default function Navbar() {
       px-4 sm:px-0 sm:py-6 sm:gap-15 z-40"
     >
       {/* Ícones regulares */}
-      <Home
-        size={35}
-        className="opacity-80 hover:opacity-100 transition-opacity min-w-10"
-      />
-      <Calendar
-        size={35}
-        className="opacity-80 hover:opacity-100 transition-opacity min-w-10"
-      />
+      <NavLink
+        to="/dash"
+        className={({ isActive }) => (isActive ? "active" : "")}
+      >
+        {({ isActive }) => (
+          <Home
+            size={35}
+            className={`opacity-80 hover:opacity-100 transition-opacity min-w-10 ${
+              isActive ? "text-white" : "text-green"
+            }`}
+            fill={isActive ? "gray" : "transparent"}
+          />
+        )}
+      </NavLink>
+      <NavLink
+        to="/tarefas"
+        className={({ isActive }) => (isActive ? "active" : "")}
+      >
+        {({ isActive }) => (
+          <Calendar
+            size={35}
+            className={`opacity-80 hover:opacity-100 transition-opacity min-w-10 ${
+              isActive ? "text-white" : "text-green"
+            }`}
+            fill={isActive ? "gray" : "transparent"}
+          />
+        )}
+      </NavLink>
 
       {/* Botão central destacado */}
       <div className="relative -top-6 sm:top-0 sm:-right-4">
