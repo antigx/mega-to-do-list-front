@@ -1,7 +1,7 @@
 import { GoogleLogin, type CredentialResponse } from "@react-oauth/google";
 import { Link } from "react-router-dom";
 import { InputSign } from "../components/Inputs";
-import Button from "../components/Button";
+import Button, { ButtonBack } from "../components/Button";
 
 export default function Login() {
   const responseMessage = (response: CredentialResponse) => {
@@ -14,6 +14,9 @@ export default function Login() {
 
   return (
     <div className="flex flex-col gap-4 justify-center items-center w-full my-4 mx-6 md:mx-50">
+      <span className="w-full flex justify-start">
+        <ButtonBack />
+      </span>
       <h1 className="text-5xl text-left mb-6 font-family-heading">
         Task Master
       </h1>

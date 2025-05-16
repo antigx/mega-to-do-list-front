@@ -1,18 +1,12 @@
-import { ArrowLeft } from "lucide-react";
 import { InputSign } from "../components/Inputs";
-import { Link, useNavigate } from "react-router-dom";
-import Button from "../components/Button";
+import { Link } from "react-router-dom";
+import Button, { ButtonBack } from "../components/Button";
 
 export default function Cadastro() {
-  const navigate = useNavigate();
-
-  const handleClick = () => navigate(-1);
   return (
-    <div className="flex flex-col gap-4 justify-between items-center w-full my-4 mx-10 py-10 md:mx-50">
-      <span className="flex w-full">
-        <button onClick={handleClick}>
-          <ArrowLeft size={35} />
-        </button>
+    <div className="flex flex-col gap-4 justify-between items-center w-full my-4 mx-10 py-20 md:mx-50 h-full">
+      <span className="w-full flex justify-start">
+        <ButtonBack />
       </span>
       <span className="w-full flex flex-col itms-start">
         <h2 className="text-3xl font-semibold">Cadastro</h2>
