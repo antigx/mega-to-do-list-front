@@ -9,61 +9,61 @@ import Login from "./pages/Login";
 import Cadastro from "./pages/Cadastro";
 // Layout with Navbar
 const LayoutWithNavbar = ({ children }: { children: ReactNode }) => (
-    <>
-        <Navbar />
-        {children}
-    </>
+  <>
+    <Navbar />
+    {children}
+  </>
 );
 
 // Layout without Navbar (plain)
 const LayoutWithoutNavbar = ({ children }: { children: ReactNode }) => (
-    <>{children}</>
+  <>{children}</>
 );
 function App() {
-    return (
-        <>
-            <main className="flex just h-screen justify-center bg-gray-100">
-                <Routes>
-                    {/* Routes WITHOUT Navbar */}
-                    <Route
-                        element={
-                            <LayoutWithoutNavbar>
-                                <Outlet />
-                            </LayoutWithoutNavbar>
-                        }
-                    >
-                        <Route path="/" element={<Home />} />
-                        <Route path="/login" element={<Login />} />
-                        /*
-                        <Route path="/cadastro" element={<Cadastro />} /> */
-                    </Route>
+  return (
+    <>
+      <main className="flex just h-screen justify-center bg-gray-100">
+        <Routes>
+          {/* Routes WITHOUT Navbar */}
+          <Route
+            element={
+              <LayoutWithoutNavbar>
+                <Outlet />
+              </LayoutWithoutNavbar>
+            }
+          >
+            <Route path="/" element={<Home />} />
+            <Route path="/login" element={<Login />} />
+            /*
+            <Route path="/cadastro" element={<Cadastro />} /> */
+          </Route>
 
-                    {/* Routes WITH Navbar */}
-                    <Route
-                        element={
-                            <LayoutWithNavbar>
-                                <Outlet />
-                            </LayoutWithNavbar>
-                        }
-                    >
-                        <Route path="/dash" element={<Dashboard />} />
-                        {/*     <Route path="/profile" element={<Profile />} />
+          {/* Routes WITH Navbar */}
+          <Route
+            element={
+              <LayoutWithNavbar>
+                <Outlet />
+              </LayoutWithNavbar>
+            }
+          >
+            <Route path="/dash" element={<Dashboard />} />
+            {/*     <Route path="/profile" element={<Profile />} />
     <Route path="/settings" element={<Settings />} /> */}
-                    </Route>
+          </Route>
 
-                    {/* 404 Page (No Navbar) */}
-                    <Route
-                        path="*"
-                        element={
-                            <LayoutWithoutNavbar>
-                                <NotFound />
-                            </LayoutWithoutNavbar>
-                        }
-                    />
-                </Routes>
-            </main>
-        </>
-    );
+          {/* 404 Page (No Navbar) */}
+          <Route
+            path="*"
+            element={
+              <LayoutWithoutNavbar>
+                <NotFound />
+              </LayoutWithoutNavbar>
+            }
+          />
+        </Routes>
+      </main>
+    </>
+  );
 }
 
 export default App;
