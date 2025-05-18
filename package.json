@@ -21,6 +21,7 @@
     "date-fns": "^4.1.0",
     "react": "^19.1.0",
     "react-circular-progressbar": "^2.2.0",
+    "react-countdown-circle-timer": "^3.2.1",
     "react-dom": "^19.1.0",
     "react-router-dom": "^7.6.0",
     "swiper": "^11.2.6"

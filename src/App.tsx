@@ -12,7 +12,7 @@ import type { Task } from "./types/Task";
 import Profile from "./pages/Profile";
 import Notifications from "./pages/Notifications";
 import AddTask from "./pages/AddTask";
-import Cronometer from "./pages/Cronometer";
+import Cronometer from "./pages/Focus";
 
 const tasks: Task[] = [
   {
@@ -123,7 +123,6 @@ function App() {
         >
           <Route path="/" element={<Home />} />
           <Route path="/login" element={<Login />} />
-          /*
           <Route path="/cadastro" element={<SignUp />} /> */
         </Route>
 

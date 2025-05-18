@@ -2,7 +2,7 @@ import GroupTask from "../components/GroupTask";
 import TodayTasks from "../components/TodayTasks";
 import type { Task } from "../types/Task";
 import profileImage from "../assets/profile.jpg";
-import { CarouselTasks } from "../components/CarouselTaks";
+import { CarouselTasks } from "../components/Carousels";
 import { ButtonNotification } from "../components/Button";
 
 export default function Dashboard({ tasks }: { tasks: Task[] }) {

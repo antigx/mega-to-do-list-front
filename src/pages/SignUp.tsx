@@ -4,7 +4,7 @@ import Button, { ButtonBack } from "../components/Button";
 
 export default function Cadastro() {
   return (
-    <div className="flex flex-col gap-4 justify-between items-center w-full my-4 mx-10 py-20 md:mx-50 h-full">
+    <div className="flex flex-col gap-4 justify-between items-center w-full my-4 mx-10 py-20 md:mx-50">
       <span className="w-full flex justify-start">
         <ButtonBack />
       </span>

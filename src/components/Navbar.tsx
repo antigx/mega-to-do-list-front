@@ -62,7 +62,6 @@ export default function Navbar() {
           </div>
         )}
       </NavLink>
-      {/* Ícones regulares */}
       <NavLink to="/foco">
         {({ isActive }) => (
           <IconNavbar>

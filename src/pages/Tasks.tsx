@@ -3,7 +3,7 @@ import {
   CarouselDays,
   CarouselFilterTasks,
   type TaskFilter,
-} from "../components/CarouselTaks";
+} from "../components/Carousels";
 import { TaskCard } from "../components/TaskCard";
 import type { Task } from "../types/Task";
 import Header from "../components/Header";
