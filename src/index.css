@@ -2,20 +2,45 @@
 @import "tailwindcss";
 
 :root {
-    --font-heading: "Inria Serif", serif;
-    --font-body: "Poppins", sans-serif;
+  --font-heading: "Inria Serif", serif;
+  --font-body: "Poppins", sans-serif;
 }
 
 @theme {
-    /* Font families */
-    --font-family-heading: "Inria Serif", serif;
-    --font-family-body: "Poppins", sans-serif;
+  /* Font families */
+  --font-family-heading: "Inria Serif", serif;
+  --font-family-body: "Poppins", sans-serif;
 
-    /* Colors */
-    --color-gray-primary: #d9d9d9;
-    --color-gray-secondary: #333333;
+  /* Colors */
+  --color-gray-primary: #d9d9d9;
+  --color-gray-secondary: #333333;
 }
 
 .icon-hover {
-    @apply transition-transform duration-200 hover:scale-110 /* hover:translate-x-1 */;
+  @apply transition-transform duration-200 hover:scale-110 /* hover:translate-x-1 */;
+}
+
+/* date picker */
+@import "react-datepicker/dist/react-datepicker.css";
+
+/* sobrescreve o container */
+.react-datepicker {
+  @apply bg-white rounded-2xl shadow-lg z-0;
+}
+
+/* cabeçalho */
+.react-datepicker__header {
+  @apply bg-gray-100 border-0 rounded-t-2xl;
+}
+
+/* dias */
+.react-datepicker__day {
+  @apply w-10 h-10 flex items-center justify-center rounded-full z-1;
+}
+.react-datepicker__day:hover {
+  @apply bg-blue-500 text-white;
+}
+/* dia selecionado */
+.react-datepicker__day--selected {
+  @apply bg-blue-600 text-white;
 }

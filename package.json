@@ -21,7 +21,9 @@
     "date-fns": "^4.1.0",
     "react": "^19.1.0",
     "react-circular-progressbar": "^2.2.0",
+    "react-color": "^2.19.3",
     "react-countdown-circle-timer": "^3.2.1",
+    "react-datepicker": "^8.3.0",
     "react-dom": "^19.1.0",
     "react-router-dom": "^7.6.0",
     "swiper": "^11.2.6"
@@ -29,6 +31,8 @@
   "devDependencies": {
     "@eslint/js": "^9.25.0",
     "@types/react": "^19.1.2",
+    "@types/react-color": "^3.0.13",
+    "@types/react-datepicker": "^6.2.0",
     "@types/react-dom": "^19.1.2",
     "@vitejs/plugin-react": "^4.4.1",
     "eslint": "^9.25.0",

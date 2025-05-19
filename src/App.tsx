@@ -13,6 +13,8 @@ import Profile from "./pages/Profile";
 import Notifications from "./pages/Notifications";
 import AddTask from "./pages/AddTask";
 import Cronometer from "./pages/Focus";
+import Achievments from "./pages/Achievments";
+import Overview from "./pages/Overview";
 
 const tasks: Task[] = [
   {
@@ -140,6 +142,8 @@ function App() {
           <Route path="/notificacoes" element={<Notifications />} />
           <Route path="/add-tarefas" element={<AddTask />} />
           <Route path="/foco" element={<Cronometer />} />
+          <Route path="/resumo" element={<Overview />} />
+          <Route path="/conquistas" element={<Achievments />} />
         </Route>
 
         {/* 404 Page (No Navbar) */}

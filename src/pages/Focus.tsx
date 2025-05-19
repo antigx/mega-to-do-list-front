@@ -1,5 +1,5 @@
 import Header from "../components/Header";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import TimePicker from "../components/TimePicker";
 import Cronometer from "../components/Cronometer";
 
