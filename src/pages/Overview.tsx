@@ -18,7 +18,10 @@ export default function Overview() {
   return (
     <>
       <Header text={"Resumo rápido"} />
-      <div className="w-full h-full p-10 justify-center items-center flex-shrink-0">
+      <div className="flex flex-col gap-10 w-full h-full py-2 px-10 justify-center items-center flex-shrink-0">
+        <p className="text-2xl text-center">
+          Você está indo bem! Continue assim...
+        </p>
         <CircularProgressbar
           value={percentage}
           text={`${percentage}%`}
@@ -33,6 +36,7 @@ export default function Overview() {
             pathTransitionDuration: 0.5,
           })}
         />
+        <p className="text-2xl text-center">{percentage}/100 </p>
       </div>
     </>
   );

@@ -24,7 +24,9 @@ export default function Profile() {
             className="rounded-full"
           />
           <h1 className="text-3xl font-bold">Jubs</h1>
-          <Button text="Editar perfil" />
+          <Link to="/editar-perfil">
+            <Button text="Editar perfil" />
+          </Link>
           <div className="flex flex-col gap-15 w-full">
             <ProfileOptionSelect
               icon={PresentationChartBarIcon}

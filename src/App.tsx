@@ -15,6 +15,7 @@ import AddTask from "./pages/AddTask";
 import Cronometer from "./pages/Focus";
 import Achievments from "./pages/Achievments";
 import Overview from "./pages/Overview";
+import EditProfile from "./pages/EditProfile";
 
 const tasks: Task[] = [
   {
@@ -139,6 +140,7 @@ function App() {
           <Route path="/dash" element={<Dashboard tasks={tasks} />} />
           <Route path="/tarefas" element={<Tasks tasks={tasks} />} />
           <Route path="/perfil" element={<Profile />} />
+          <Route path="/editar-perfil" element={<EditProfile />} />
           <Route path="/notificacoes" element={<Notifications />} />
           <Route path="/add-tarefas" element={<AddTask />} />
           <Route path="/foco" element={<Cronometer />} />
