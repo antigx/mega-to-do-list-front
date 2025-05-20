@@ -104,7 +104,7 @@ const LayoutWithNavbar = ({ children }: { children: ReactNode }) => (
   <>
     <Navbar />
 
-    <div className="flex-1 p-6 overflow-y-auto">{children}</div>
+    <div className="flex-1 px-6 overflow-y-auto">{children}</div>
   </>
 );
 

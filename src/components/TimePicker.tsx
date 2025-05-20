@@ -37,8 +37,8 @@ export default function TimePicker({
   };
 
   return (
-    <>
-      <h1>Determine o horário que encerrará seu horário de foco</h1>
+    <div className="w-full flex flex-col justify-center items-center gap-5">
+      <h1>Determine o tempo de foco</h1>
       <div className="flex flex-col gap-4 max-w-2/3 h-full rounded-xl bg-gray-primary p-8 shadow-md text-center space-y-4 shadow-inner">
         <p className="text-sm w-full text-left text-gray-600">Enter time</p>
         <div className="flex justify-center items-center space-x-2 text-2xl font-family-body">
@@ -88,6 +88,6 @@ export default function TimePicker({
         </div>
       </div>
       <Button text="Definir Foco" handleClick={handleClick} />
-    </>
+    </div>
   );
 }

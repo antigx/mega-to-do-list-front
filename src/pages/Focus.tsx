@@ -18,7 +18,7 @@ export default function Focus() {
   return (
     <>
       <Header text="Hora do Foco" />
-      <div className="flex flex-col gap-10 items-center justify-evenly w-full py-30">
+      <div className="flex flex-col gap-10 items-center justify-center w-full mt-20">
         {!showCronometer ? (
           <TimePicker handleClickTimer={handleClickTimer} />
         ) : (

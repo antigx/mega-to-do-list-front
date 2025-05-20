@@ -23,10 +23,10 @@ export default function Cronometer({
 
   useEffect(() => {
     const handleResize = () => {
-      if (window.innerWidth < 640) setTimerSize(350); // sm
+      if (window.innerWidth < 640) setTimerSize(300); // sm
       else if (window.innerWidth < 768) setTimerSize(300); // md
-      else if (window.innerWidth < 1024) setTimerSize(400); // lg
-      else setTimerSize(500); // xl+
+      else if (window.innerWidth < 1024) setTimerSize(300); // lg
+      else setTimerSize(300); // xl+
     };
 
     handleResize(); // Set initial size
