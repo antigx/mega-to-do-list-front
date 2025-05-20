@@ -126,10 +126,10 @@ export function CarouselDays({ month, year }: { month: number; year: number }) {
                       ? "bg-gray-secondary text-white"
                       : isToday
                       ? "border-2 border-blue-300"
-                      : "border-2 border-gray-200/70 bg-gray-primary"
+                      : "border-2 border-gray-200/0 bg-gray-primary"
                   }
                   transition-all duration-200 ease-out
-                  hover:shadow-md hover:scale-[1.03] hover:border-gray-seconday
+                  hover:shadow-md hover:scale-[1.03] hover:border-gray-secondary
                   active:scale-95`}
                 >
                   <span

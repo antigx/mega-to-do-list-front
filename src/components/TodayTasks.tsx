@@ -8,7 +8,7 @@ export default function TodayTasks() {
   const percentage = 70;
 
   return (
-    <div className="bg-gray-secondary text-white p-4 rounded-2xl flex justify-between shadow-lg my-5 w-full">
+    <div className="bg-gray-secondary text-white p-4 rounded-2xl flex justify-between shadow-md hover:shadow-lg transform-shadow duration-300 my-5 w-full">
       <div className="flex items-center justify-between w-full ">
         <div className="flex flex-col justify-between h-full">
           <div className="text-sm">
@@ -18,7 +18,7 @@ export default function TodayTasks() {
           </div>
           <Link
             to="/tarefas"
-            className="mt-4 bg-gray-200 text-gray-800 text-sm px-4 py-2 rounded-full hover:bg-gray-300 transition"
+            className="mt-4 bg-gray-200 text-gray-800 text-sm text-center px-4 py-2 rounded-full hover:bg-gray-300 transition"
           >
             Ver Tarefas
           </Link>

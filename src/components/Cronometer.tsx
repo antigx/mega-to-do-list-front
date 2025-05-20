@@ -65,7 +65,7 @@ export default function Cronometer({
             setTime(0);
             setShowCronometer(false);
           }}
-          className="p-4 rounded-full border"
+          className="p-4 rounded-full border hover:border-red-400 hover:bg-red-400/40 hover:text-red-500"
         >
           <TrashIcon className="w-8" />
         </div>
@@ -86,7 +86,7 @@ export default function Cronometer({
             setTime(time);
             resetTimer();
           }}
-          className="p-4 rounded-full border"
+          className="p-4 rounded-full border hover:border-green-400 hover:bg-green-400/40 hover:text-green-500"
         >
           <ArrowPathIcon className="w-8" />
         </div>

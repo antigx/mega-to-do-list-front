@@ -17,6 +17,7 @@ import Achievments from "./pages/Achievments";
 import Overview from "./pages/Overview";
 import EditProfile from "./pages/EditProfile";
 import NavBarDesktop from "./components/NavBarDesktop";
+import background from "./assets/background.png";
 
 const tasks: Task[] = [
   {
@@ -117,7 +118,16 @@ const LayoutWithoutNavbar = ({ children }: { children: ReactNode }) => (
 );
 function App() {
   return (
-    <main className="h-screen w-full flex justify-center bg-gray-100 overflow-x-hidden">
+    <main
+      className="h-screen w-full flex justify-center overflow-x-hidden"
+      style={{
+        backgroundImage: `url(${background})`,
+        backgroundSize: "cover",
+        backgroundPosition: "center",
+        backgroundAttachment: "fixed",
+        backgroundRepeat: "no-repeat",
+      }}
+    >
       <Routes>
         {/* Routes WITHOUT Navbar */}
         <Route

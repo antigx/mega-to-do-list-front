@@ -12,6 +12,7 @@
   --font-family-body: "Poppins", sans-serif;
 
   /* Colors */
+  --color-gray-background: #f4f4f4;
   --color-gray-primary: #d9d9d9;
   --color-gray-secondary: #333333;
 }

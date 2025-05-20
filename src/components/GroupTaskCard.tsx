@@ -19,7 +19,7 @@ export default function GroupTaskCard({
 }: GroupTaskCardProps) {
   return (
     <div
-      className={`flex w-full items-center justify-between gap-4 bg-gray-primary p-4 rounded-lg shadow-md hover:shadow-lg transition-shadow duration-200 ${className}`}
+      className={`flex w-full h-20 items-center justify-between gap-4 bg-gray-primary p-4 rounded-xl shadow-sm hover:shadow-md transition-shadow duration-200 ${className}`}
     >
       <div className="flex items-center gap-4 min-w-0">
         <div
@@ -36,7 +36,7 @@ export default function GroupTaskCard({
         </div>
       </div>
 
-      <div className="w-16 h-16 flex-shrink-0">
+      <div className="w-15 h-15 flex-shrink-0">
         <CircularProgressbar
           value={percentage}
           text={`${percentage}%`}
