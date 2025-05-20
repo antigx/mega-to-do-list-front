@@ -4,14 +4,14 @@ import { useEffect, useState } from "react";
 
 export default function Overview() {
   const [color, setColor] = useState<string>("");
-  const percentage = 90;
+  const percentage = 80;
   useEffect(() => {
     if (percentage >= 80) {
       setColor("#00ff00");
     } else if (percentage >= 50) {
       setColor("#fff000");
     } else {
-      setColor("#ff00ff");
+      setColor("#ff0000");
     }
   }, [percentage]);
 
@@ -22,20 +22,22 @@ export default function Overview() {
         <p className="text-2xl text-center">
           Você está indo bem! Continue assim...
         </p>
-        <CircularProgressbar
-          value={percentage}
-          text={`${percentage}%`}
-          counterClockwise
-          styles={buildStyles({
-            rotation: 0.2,
-            strokeLinecap: "round",
-            pathColor: color,
-            trailColor: "#e0e0e0",
-            textColor: "#333",
-            textSize: "20px",
-            pathTransitionDuration: 0.5,
-          })}
-        />
+        <span>
+          <CircularProgressbar
+            value={percentage}
+            text={`${percentage}%`}
+            counterClockwise
+            styles={buildStyles({
+              rotation: 0.2,
+              strokeLinecap: "round",
+              pathColor: color,
+              trailColor: "#e0e0e0",
+              textColor: "#333",
+              textSize: "20px",
+              pathTransitionDuration: 0.5,
+            })}
+          />
+        </span>
         <p className="text-2xl text-center">{percentage}/100 </p>
       </div>
     </>

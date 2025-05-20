@@ -8,7 +8,7 @@ import { ButtonNotification } from "../components/Button";
 export default function Dashboard({ tasks }: { tasks: Task[] }) {
   return (
     <>
-      <div className="flex justify-between">
+      <div className="flex justify-between pt-4">
         <div className="flex items-center gap-4">
           <img
             src={profileImage}

@@ -1,7 +1,7 @@
 import { Outlet, Route, Routes } from "react-router-dom";
 import Dashboard from "./pages/Dashboard";
 import "./index.css";
-import Navbar from "./components/Navbar";
+import NavbarMobile from "./components/Navbar";
 import Home from "./pages/Home";
 import type { ReactNode } from "react";
 import NotFound from "./pages/NotFound";
@@ -16,6 +16,7 @@ import Cronometer from "./pages/Focus";
 import Achievments from "./pages/Achievments";
 import Overview from "./pages/Overview";
 import EditProfile from "./pages/EditProfile";
+import NavBarDesktop from "./components/NavBarDesktop";
 
 const tasks: Task[] = [
   {
@@ -102,9 +103,11 @@ const tasks: Task[] = [
 // Layout with Navbar
 const LayoutWithNavbar = ({ children }: { children: ReactNode }) => (
   <>
-    <Navbar />
-
-    <div className="flex-1 px-6 overflow-y-auto">{children}</div>
+    <NavbarMobile />
+    <NavBarDesktop />
+    <div className="flex-1 px-6 sm:mt-16 w-full max-w-[100vw] overflow-x-hidden">
+      <div className="mx-auto w-full">{children}</div>
+    </div>
   </>
 );
 
@@ -114,7 +117,7 @@ const LayoutWithoutNavbar = ({ children }: { children: ReactNode }) => (
 );
 function App() {
   return (
-    <main className="h-screen flex justify-center bg-gray-100">
+    <main className="h-screen w-full flex justify-center bg-gray-100 overflow-x-hidden">
       <Routes>
         {/* Routes WITHOUT Navbar */}
         <Route

@@ -14,41 +14,41 @@ export default function Profile() {
   return (
     <>
       <Header text="Seu Perfil" />
-      <div>
-        <div className="flex flex-col gap-4  items-center py-10 h-full">
-          <img
-            src={profileImage}
-            alt="Profile"
-            width={100}
-            height={100}
-            className="rounded-full"
+      <div className="flex flex-col  gap-4 items-center py-4 h-full">
+        <img
+          src={profileImage}
+          alt="Profile"
+          width={100}
+          height={100}
+          className="rounded-full"
+        />
+        <h1 className="text-3xl font-bold">Jubs</h1>
+        <Link to="/editar-perfil">
+          <Button text="Editar perfil" />
+        </Link>
+        <div className="flex flex-col gap-5 w-full">
+          <ProfileOptionSelect
+            icon={PresentationChartBarIcon}
+            text={"Resumo rápido"}
+            route="/resumo"
           />
-          <h1 className="text-3xl font-bold">Jubs</h1>
-          <Link to="/editar-perfil">
-            <Button text="Editar perfil" />
-          </Link>
-          <div className="flex flex-col gap-15 w-full">
-            <ProfileOptionSelect
-              icon={PresentationChartBarIcon}
-              text={"Resumo rápido"}
-              route="/resumo"
-            />
-            <ProfileOptionSelect
-              icon={TrophyIcon}
-              text={"Conquistas"}
-              route="/conquistas"
-            />
-            <span className="flex justify-between items-center border w-full h-15 px-4 bg-gray-primary rounded-lg shadow-md">
-              <span className="flex gap-4 items-center">
-                <MoonIcon className="w-8 h-8" />
-                <p className="text-xl font-bold">Dark Mode</p>
-              </span>
-              <ToggleSwitch checked={false} onChange={() => {}} />
+          <ProfileOptionSelect
+            icon={TrophyIcon}
+            text={"Conquistas"}
+            route="/conquistas"
+          />
+          <span className="flex justify-between items-center border w-full h-15 px-4 bg-gray-primary rounded-lg shadow-md">
+            <span className="flex gap-4 items-center">
+              <MoonIcon className="w-8 h-8" />
+              <p className="text-xl font-bold">Dark Mode</p>
             </span>
-          </div>
+            <ToggleSwitch checked={false} onChange={() => {}} />
+          </span>
         </div>
-        <a href="#">Sair da conta</a>
       </div>
+      <span className="w-full flex justify-end py-2">
+        <a href="#">Sair da conta</a>
+      </span>{" "}
     </>
   );
 }
@@ -65,16 +65,15 @@ export function ProfileOptionSelect({
   route,
 }: ProfileOptionSelectProps) {
   return (
-    <span className="flex justify-between items-center border w-full h-15 px-4 bg-gray-primary rounded-lg shadow-md">
-      <span className="flex gap-4 items-center">
-        <Icon className="w-8 h-8" />
-        <p className="text-xl font-bold">{text}</p>
-      </span>
-      <Link to={route}>
-        {" "}
+    <Link to={route}>
+      <span className="flex justify-between items-center border w-full h-15 px-4 bg-gray-primary rounded-lg shadow-md">
+        <span className="flex gap-4 items-center">
+          <Icon className="w-8 h-8" />
+          <p className="text-xl font-bold">{text}</p>
+        </span>{" "}
         <PlayIcon className="w-5 h-5" />
-      </Link>
-    </span>
+      </span>
+    </Link>
   );
 }
 interface ToggleSwitchProps {

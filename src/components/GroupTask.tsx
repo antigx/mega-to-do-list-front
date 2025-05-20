@@ -36,8 +36,7 @@ export default function GroupTask() {
   return (
     <div className="my-2 mb-20 md:mb-0 w-full">
       <h2 className="text-xl font-semibold py-2">Tarefas em Grupos</h2>
-      <div className="grid gap-4 grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
-        {/* grid-cols-[repeat(auto-fill,_minmax(400px,_1fr))] */}
+      <div className="grid gap-4 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
         {groupTasks.map((task, index) => (
           <GroupTaskCard
             key={index}
