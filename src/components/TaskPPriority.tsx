@@ -99,9 +99,9 @@ function TaskSummary({ task }: { task: Task }) {
           {task.completed ? "Concluído" : "Pendente"}
         </span>
       </div>
-      {task.scheduled_for && (
+      {task.end_date && (
         <div className="text-xs text-gray-500">
-          Prazo: {new Date(task.scheduled_for).toLocaleDateString()}
+          Prazo: {new Date(task.end_date).toLocaleDateString()}
         </div>
       )}
     </div>

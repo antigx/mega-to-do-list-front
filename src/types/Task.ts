@@ -12,6 +12,7 @@ export interface Task {
   progress: number;
   status: string;
   remaining: string | null;
-  scheduled_for: Date;
+  start_date: Date;
+  end_date: Date;
   completed: boolean;
 }

@@ -19,7 +19,6 @@ interface TaskForm {
   description: string;
   start_date: Date;
   end_date: Date;
-  scheduled_for: Date;
   priority: 1 | 2 | 3;
 }
 
@@ -30,7 +29,6 @@ export default function AddTask() {
     description: "",
     start_date: new Date(),
     end_date: new Date(Date.now() + 86400000),
-    scheduled_for: new Date(Date.now() + 86400000),
     priority: 2,
   });
   const { addTask } = useData();
@@ -45,7 +43,7 @@ export default function AddTask() {
 
   const handleDateChange = (
     date: Date | null,
-    field: "startDate" | "scheduled_for"
+    field: "startDate" | "end_date"
   ) => {
     if (date) {
       setForm((prev) => ({ ...prev, [field]: date }));
@@ -57,7 +55,6 @@ export default function AddTask() {
       const taskData = {
         ...form,
         end_date: form.end_date.toISOString(),
-        scheduled_for: form.end_date.toISOString(),
         start_date: form.start_date.toISOString(),
       };
       const response = await api.post("/tasks", taskData);
@@ -119,7 +116,7 @@ export default function AddTask() {
                 />
                 <DatePicker
                   selected={form.end_date}
-                  onChange={(date) => handleDateChange(date, "scheduled_for")}
+                  onChange={(date) => handleDateChange(date, "end_date")}
                   customInput={<CustomDateInput label="Data de término" />}
                   dateFormat="dd MMMM, yyyy"
                   minDate={form.start_date}

@@ -120,7 +120,7 @@ export default function TaskDetails() {
                 />
               }
               label="Data de Início"
-              value={new Date(task.scheduled_for).toLocaleDateString("pt-BR", {
+              value={new Date(task.end_date).toLocaleDateString("pt-BR", {
                 day: "numeric",
                 month: "long",
                 year: "numeric",
@@ -135,7 +135,7 @@ export default function TaskDetails() {
                 />
               }
               label="Data de Término"
-              value={new Date(task.scheduled_for).toLocaleDateString("pt-BR", {
+              value={new Date(task.end_date).toLocaleDateString("pt-BR", {
                 day: "numeric",
                 month: "long",
                 year: "numeric",

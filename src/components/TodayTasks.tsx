@@ -16,7 +16,7 @@ export default function TodayTasks() {
     const todayYear = today.getFullYear();
 
     const total = tasks.filter((i) => {
-      const scheduled = new Date(i.scheduled_for);
+      const scheduled = new Date(i.end_date);
       return (
         scheduled.getDate() === todayDay &&
         scheduled.getMonth() === todayMonth &&

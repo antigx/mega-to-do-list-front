@@ -67,8 +67,8 @@ export default function Tasks() {
 
     // First filter by date
     const dateFilteredTasks = tasks.filter((task) => {
-      if (!task.scheduled_for) return false;
-      const taskDate = new Date(task.scheduled_for);
+      if (!task.end_date) return false;
+      const taskDate = new Date(task.end_date);
       return (
         taskDate.getDate() === selectedDate.getDate() &&
         taskDate.getMonth() === selectedDate.getMonth() &&
