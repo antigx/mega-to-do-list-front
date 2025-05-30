@@ -1,54 +1,94 @@
-# React + TypeScript + Vite
+# 📝 Task Manager App - Frontend
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Aplicação frontend para gerenciamento de tarefas com interface intuitiva e funcionalidades completas para organização pessoal ou em equipe.
 
-Currently, two official plugins are available:
+## ✨ Funcionalidades
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- ✅ Listagem de tarefas
+- ➕ Adição de novas tarefas
+- ✏️ Edição de tarefas existentes
+- ✔️ Marcação de tarefas como completas
+- 🗑️ Exclusão de tarefas
+- 🔍 Filtros por status (todas, ativas, completas)
+- 🔄 Persistência dos dados
 
-## Expanding the ESLint configuration
+## 🛠️ Tecnologias Utilizadas
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+- **Frontend**:
+  - React.js
+  - TypeScript
+  - Vite (como build tool)
+  - Axios (requisições HTTP)
+  - React Hook Form (formulários)
+  - Tailwind CSS (estilização)
 
-```js
-export default tseslint.config({
-  extends: [
-    // Remove ...tseslint.configs.recommended and replace with this
-    ...tseslint.configs.recommendedTypeChecked,
-    // Alternatively, use this for stricter rules
-    ...tseslint.configs.strictTypeChecked,
-    // Optionally, add this for stylistic rules
-    ...tseslint.configs.stylisticTypeChecked,
-  ],
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
+## 🚀 Como Executar
+
+### Pré-requisitos
+
+- Node.js (v18+)
+- npm ou yarn
+- Backend da aplicação em execução
+
+### Instalação
+
+```bash
+# Clone o repositório
+git clone https://github.com/antigx/mega-to-do-list-front.git
+
+# Acesse a pasta do projeto
+cd mega-to-do-list-front
+
+# Instale as dependências
+npm install
+# ou
+yarn install
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+### Configuração
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+Crie um arquivo `.env` na raiz do projeto com o url base da api baseado no `.envexample`:
 
-export default tseslint.config({
-  plugins: {
-    // Add the react-x and react-dom plugins
-    'react-x': reactX,
-    'react-dom': reactDom,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended typescript rules
-    ...reactX.configs['recommended-typescript'].rules,
-    ...reactDom.configs.recommended.rules,
-  },
-})
+```env
+VITE_API_URL=http://localhost:3000
 ```
+
+### Executando a aplicação
+
+```bash
+npm run dev
+# ou
+yarn dev
+```
+
+A aplicação estará disponível em: [http://localhost:5173](http://localhost:5173)
+
+## 📂 Estrutura de Arquivos
+
+```
+mega-to-do-list-front/
+├── public/              # Arquivos estáticos
+├── src/
+│   ├── assets/          # Recursos estáticos (imagens, fonts)
+│   ├── components/      # Componentes reutilizáveis
+│   ├── hooks/           # Custom hooks
+│   ├── pages/           # Páginas da aplicação
+│   ├── services/        # Lógica de chamadas à API
+│   ├── styles/          # Estilos globais
+│   ├── types/           # Tipos TypeScript
+│   ├── utils/           # Utilitários
+│   ├── App.tsx          # Componente raiz
+│   └── main.tsx         # Ponto de entrada
+├── .env.example         # Exemplo de variáveis de ambiente
+├── package.json         # Dependências e scripts
+├── tsconfig.json        # Configuração do TypeScript
+└── vite.config.ts       # Configuração do Vite
+```
+
+## 📄 Licença
+
+Distribuído sob a licença MIT. Veja `LICENSE` para mais informações.
+
+## ✉️ Contato
+
+Link do Projeto: [https://github.com/seu-usuario/mega-to-do-list-front](https://github.com/seu-usuario/mega-to-do-list-front)
