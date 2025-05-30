@@ -16,13 +16,13 @@ export default function Home() {
       >
         Entrar →
       </Link>
-      <Link
+      {/*       <Link
         title="Temporario até gerenciar usuários"
         to="/dash"
         className="fixed bottom-0 right-0 m-4 bg-gray-secondary rounded-xl border-2 border-white text-white px-6 py-4 text-1xl"
       >
         Temp. Dash
-      </Link>
+      </Link> */}
     </div>
   );
 }

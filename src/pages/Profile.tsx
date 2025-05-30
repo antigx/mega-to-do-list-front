@@ -4,13 +4,38 @@ import Button from "../components/Button";
 import {
   MoonIcon,
   PresentationChartBarIcon,
+  TrashIcon,
   TrophyIcon,
 } from "@heroicons/react/24/outline";
 import { PlayIcon } from "@heroicons/react/24/solid";
 import type { ElementType } from "react";
 import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import api from "../services/api";
 
 export default function Profile() {
+  const navigate = useNavigate();
+  async function handleLogout() {
+    try {
+      // 1. Chamada opcional para endpoint de logout no backend
+    } catch (error) {
+      console.error("Erro durante logout:", error);
+    } finally {
+      // 2. Limpeza completa do frontend
+      localStorage.removeItem("token");
+      localStorage.removeItem("user"); // Se você armazenar dados do usuário
+      sessionStorage.clear(); // Limpa sessionStorage se estiver usando
+
+      // 3. Remove o token do axios
+      delete api.defaults.headers.common["Authorization"];
+
+      // 4. Redireciona para a página inicial
+      navigate("/");
+
+      // 5. Recarrega a página para garantir limpeza completa do estado
+      window.location.reload();
+    }
+  }
   return (
     <>
       <Header text="Seu Perfil" />
@@ -47,8 +72,13 @@ export default function Profile() {
         </div>
       </div>
       <span className="w-full flex justify-end py-2">
-        <a href="#">Sair da conta</a>
-      </span>{" "}
+        <button
+          onClick={handleLogout}
+          className="text-sm font-medium text-red-500 hover:underline hover:text-red-700 transition-colors"
+        >
+          Sair da conta
+        </button>
+      </span>
     </>
   );
 }

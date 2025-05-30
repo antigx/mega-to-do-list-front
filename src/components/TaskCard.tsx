@@ -1,6 +1,10 @@
-import { StarIcon } from "@heroicons/react/24/outline";
+import { ChevronDoubleRightIcon, StarIcon } from "@heroicons/react/24/outline";
 import { StarIcon as StarIconSolid } from "@heroicons/react/24/solid";
 import type { Task } from "../types/Task";
+import { useState } from "react";
+import { useData } from "../contexts/DataContext";
+import api from "../services/api";
+import { Link } from "react-router-dom";
 
 interface TaskCardProps {
   task: Task;
@@ -27,20 +31,29 @@ function TaskProgress({
 }
 
 export function TaskCardDash({ task }: TaskCardProps) {
+  const [completed, setCompleted] = useState(task.completed);
+  const color = getColor(Number(task.priority));
+  const { updateTask } = useData();
+
+  const toggleComplete = async () => {
+    setCompleted(!completed);
+    updateTask(task.id, { completed: !task.completed });
+    await api.put(`/tasks/${task.id}`, { ...task, completed: !task.completed });
+  };
   return (
     <div
       role="listitem"
       aria-label={`Task: ${task.title}`}
       className={`rounded-[15px] p-4 w-full overflow-visible shadow-sm hover:shadow-md transition-shadow duration-200`}
       style={{
-        backgroundColor: `${task.color}40`,
+        backgroundColor: `${color}50`,
       }}
     >
       <div className="flex gap-5 items-start justify-between">
         <div>
-          <div className="text-sm text-gray-600 flex justify-between items-center mb-1">
+          {/*           <div className="text-sm text-gray-600 flex justify-between items-center mb-1">
             {task.group || "No group"}
-          </div>
+          </div> */}
 
           <h3 className="text-lg font-semibold text-gray-800 line-clamp-1">
             {task.title}
@@ -52,21 +65,25 @@ export function TaskCardDash({ task }: TaskCardProps) {
             </p>
           )}
         </div>
-        {task.status === "done" ? (
-          <StarIconSolid color={task.color} className="w-7" />
-        ) : (
-          <StarIcon color={task.color} className="w-7" />
-        )}
+        <span onClick={toggleComplete}>
+          {completed === true ? (
+            <StarIconSolid color={color} className="w-7" />
+          ) : (
+            <StarIcon color={color} className="w-7" />
+          )}
+        </span>
       </div>
 
-      <TaskProgress progress={task.progress} color={task.color} />
+      <TaskProgress progress={task.progress} color={color} />
 
       <div className="flex justify-between items-center mt-2">
         {task.remaining && (
           <span className="text-xs text-gray-500">{task.remaining}</span>
         )}
-        <span className="text-xs text-gray-500 ml-auto">
-          {task.progress}% completo
+        <span className="text-xs text-gray-500 ml-auto h-7 w-7">
+          <Link to={`/tarefa/${task.id}`}>
+            <ChevronDoubleRightIcon />
+          </Link>
         </span>
       </div>
     </div>
@@ -77,29 +94,45 @@ export function TaskCard({ task }: TaskCardProps) {
   const legendaStatus: Record<string, string> = {
     pending: "Pendente",
     done: "Concluído",
-    ongoing: "Em processo",
+  };
+  const [completed, setCompleted] = useState(task.completed);
+  const color = getColor(Number(task.priority));
+  const { updateTask } = useData();
+
+  const toggleComplete = async () => {
+    setCompleted(!completed);
+    updateTask(task.id, { completed: !task.completed });
+    await api.put(`/tasks/${task.id}`, { ...task, completed: !task.completed });
   };
   return (
     <div
       role="listitem"
       aria-label={`Task: ${task.title}`}
       className="bg-gray-primary rounded-[15px] px-4 py-2 w-full overflow-visible shadow-sm hover:shadow-md transition-shadow duration-200 flex justify-between items-center"
+      style={{
+        backgroundColor: `${color}99`,
+      }}
     >
       <div className="flex flex-col gap-0">
-        <div className="text-sm text-gray-600 flex justify-between items-center">
+        {/*         <div className="text-sm text-gray-600 flex justify-between items-center">
           <span>{task.group || "No group"}</span>
-        </div>
+        </div> */}
         <h3 className="text-lg font-semibold text-gray-800">{task.title}</h3>
         {task.description && (
           <p className="text-sm text-gray-600 ">{task.description}</p>
         )}
       </div>
-      <div className="flex flex-col items-center justify-center gap-1 w-20">
-        <StarIcon
-          color={task.color}
-          fill={task.status === "done" ? task.color : "transparent"}
-          className="w-[60%]"
-        />
+      <div
+        className="flex flex-col items-center justify-center gap-1 w-20"
+        onClick={toggleComplete}
+      >
+        <span onClick={toggleComplete}>
+          {completed === true ? (
+            <StarIconSolid color={color} className="w-10" />
+          ) : (
+            <StarIcon color={color} className="w-10" />
+          )}
+        </span>
         <div className="w-full bg-gray-400 text-[8px] text-gray-100 rounded-lg flex items-center justify-center">
           {legendaStatus[task.status]}
         </div>
@@ -107,3 +140,16 @@ export function TaskCard({ task }: TaskCardProps) {
     </div>
   );
 }
+
+export const getColor = (priority: number): string => {
+  switch (priority) {
+    case 1:
+      return "#33C1FF";
+    case 2:
+      return "#28A745";
+    case 3:
+      return "#FF5733";
+    default:
+      return "#28A745";
+  }
+};

@@ -5,6 +5,7 @@ import { Link } from "react-router-dom";
 import { InputSign } from "../components/Inputs";
 
 export default function EditProfile() {
+  const handleChange = () => {};
   return (
     <>
       <Header text="Editar perfil" />
@@ -22,24 +23,33 @@ export default function EditProfile() {
             action=""
             className="w-full h-full flex flex-col justify-evenly items-center gap-6 p-5"
           >
-            <InputSign text={"Nome"} type={"text"} id={"name"} name={"name"} />
+            <InputSign
+              text={"Nome"}
+              type={"text"}
+              id={"name"}
+              name={"name"}
+              onChange={handleChange}
+            />
             <InputSign
               text={"Email"}
               type={"email"}
               id={"email"}
               name={"email"}
+              onChange={handleChange}
             />
             <InputSign
               text={"Número de Telefone"}
               type={"te"}
               id={"name"}
               name={"name"}
+              onChange={handleChange}
             />
             <InputSign
               text={"Senha"}
               type={"password"}
               id={"password"}
               name={"password"}
+              onChange={handleChange}
             />
             <Link to="/perfil">
               <Button text="Salvar alterações" />

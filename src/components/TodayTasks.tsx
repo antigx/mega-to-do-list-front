@@ -3,9 +3,31 @@ import { EllipsisHorizontalIcon } from "@heroicons/react/24/outline";
 import { CircularProgressbar, buildStyles } from "react-circular-progressbar";
 import "react-circular-progressbar/dist/styles.css";
 import { Link } from "react-router-dom";
+import { useData } from "../contexts/DataContext";
+import { useEffect, useState } from "react";
 
 export default function TodayTasks() {
-  const percentage = 70;
+  const { tasks } = useData();
+  const [percentage, setPercentage] = useState<number>(0);
+  useEffect(() => {
+    const today = new Date();
+    const todayDay = today.getDate();
+    const todayMonth = today.getMonth();
+    const todayYear = today.getFullYear();
+
+    const total = tasks.filter((i) => {
+      const scheduled = new Date(i.scheduled_for);
+      return (
+        scheduled.getDate() === todayDay &&
+        scheduled.getMonth() === todayMonth &&
+        scheduled.getFullYear() === todayYear
+      );
+    });
+
+    const completed = total.filter((i) => i.completed);
+
+    setPercentage((total.length ? completed.length / total.length : 0) * 100);
+  }, [tasks]);
 
   return (
     <div className="bg-gray-secondary text-white p-4 rounded-2xl flex justify-between shadow-md hover:shadow-lg transform-shadow duration-300 my-5 w-full">
@@ -26,7 +48,7 @@ export default function TodayTasks() {
         <div className="w-20 h-20">
           <CircularProgressbar
             value={percentage}
-            text={`${percentage}%`}
+            text={`${percentage.toFixed(0)}%`}
             counterClockwise={true}
             styles={buildStyles({
               rotation: 0.2,

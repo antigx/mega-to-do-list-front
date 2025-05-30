@@ -1,27 +1,80 @@
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { InputSign } from "../components/Inputs";
 import { Link } from "react-router-dom";
 import Button, { ButtonBack } from "../components/Button";
+import { useEffect } from "react";
+import api from "../services/api"; // Importe a instância do Axios
+
+interface SignupResponse {
+  message: string;
+  user?: {
+    id: string;
+    name: string;
+    email: string;
+  };
+}
 
 export default function Cadastro() {
+  const navigate = useNavigate();
+
+  const [form, setForm] = useState({
+    name: "",
+    email: "",
+    password: "",
+  });
+  const [error, setError] = useState("");
+
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    if (token) {
+      navigate("/dash");
+    }
+  }, []);
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setForm({ ...form, [e.target.name]: e.target.value });
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setError("");
+
+    try {
+      await api.post<SignupResponse>("/users", form);
+
+      // Redireciona para login após cadastro bem-sucedido
+      navigate("/login");
+    } catch (err: any) {
+      setError(
+        err.response?.data?.error ||
+          err.message ||
+          "Erro ao cadastrar usuário. Tente novamente."
+      );
+    }
+  };
   return (
     <div className="flex flex-col gap-4 justify-between items-center w-full my-4 mx-10 py-20 md:mx-50">
       <span className="w-full flex justify-start">
         <ButtonBack />
       </span>
-      <span className="w-full flex flex-col itms-start">
+      <span className="w-full flex flex-col items-start">
         <h2 className="text-3xl font-semibold">Cadastro</h2>
         <p className="text-gray-600 text-md">Crie uma conta para continuar!</p>
       </span>
+
       <form
-        action=""
+        onSubmit={handleSubmit}
         className="flex flex-col gap-4 justify-between items-center w-full"
       >
         <InputSign
           text="Nome Completo"
           type="text"
           id="nameId"
-          name="nome"
+          name="name"
           placeholder="Seu Nome"
+          value={form.name}
+          onChange={handleChange}
         />
         <InputSign
           text="Email"
@@ -29,19 +82,8 @@ export default function Cadastro() {
           id="emailSignInId"
           name="email"
           placeholder="seuemail@mail.com"
-        />
-        <InputSign
-          text="Data de Nascimento"
-          type="date"
-          id="birthdayId"
-          name="birthday"
-        />
-        <InputSign
-          text="Número de Telefone"
-          type="text"
-          id="phoneId"
-          name="phone"
-          placeholder="+55 "
+          value={form.email}
+          onChange={handleChange}
         />
         <InputSign
           text="Senha"
@@ -49,9 +91,14 @@ export default function Cadastro() {
           id="passwordSignInId"
           name="password"
           placeholder="********"
+          value={form.password}
+          onChange={handleChange}
         />
-        <Button text="Cadastrar" />
+        <Button text="Cadastrar" handleClick={handleSubmit} />
       </form>
+
+      {error && <p className="text-red-500">{error}</p>}
+
       <Link to="/login">Já possui uma conta? Faça login.</Link>
     </div>
   );
