@@ -50,7 +50,7 @@ yarn install
 Crie um arquivo `.env` na raiz do projeto com o url base da api baseado no `.envexample`:
 
 ```env
-VITE_API_URL=http://localhost:3000
+VITE_API_URL=http://api_base_url:n_port
 ```
 
 ### Executando a aplicação
@@ -91,4 +91,4 @@ Distribuído sob a licença MIT. Veja `LICENSE` para mais informações.
 
 ## ✉️ Contato
 
-Link do Projeto: [https://github.com/seu-usuario/mega-to-do-list-front](https://github.com/seu-usuario/mega-to-do-list-front)
+Link do Projeto: [https://github.com/antigx/mega-to-do-list-front](https://github.com/antigx/mega-to-do-list-front)
