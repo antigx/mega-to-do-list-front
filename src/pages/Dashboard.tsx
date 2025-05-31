@@ -11,6 +11,7 @@ import AllTasks from "../components/AllTasks";
 export default function Dashboard() {
   const { tasks, loading, error } = useData();
   const [searching, setSearching] = useState<boolean>(false);
+  const { user } = useData();
 
   return (
     <div className="md:p-4">
@@ -28,7 +29,7 @@ export default function Dashboard() {
           />
           <div>
             <p className="text-gray-600">Olá,</p>
-            <h2 className="text-2xl font-semibold">Jubileu!</h2>
+            <h2 className="text-2xl font-semibold">{user?.name}!</h2>
           </div>
         </NavLink>
         <ButtonNotification />

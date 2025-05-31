@@ -6,44 +6,81 @@ import { useNavigate } from "react-router-dom";
 import orderTasks from "../utils/orderTasks";
 import { jwtDecode } from "jwt-decode";
 
+// Extend JWT decode types
+declare module "jwt-decode" {
+  interface JwtPayload {
+    name: string;
+    email: string;
+    // Add other claims you expect
+  }
+}
+
+type User = {
+  name: string;
+  email: string;
+};
+
 type DataContextType = {
   tasks: Task[];
   loading: boolean;
   error: string | null;
+  user: User | null;
   fetchTasks: () => Promise<void>;
   addTask: (task: Task) => void;
   updateTask: (id: string, updatedTask: Partial<Task>) => void;
   deleteTask: (id: string) => void;
   deleteCompletedTasks: () => void;
   handleLogout: () => void;
+  fetchUser: () => void;
 };
 
 const DataContext = createContext<DataContextType>({
   tasks: [],
   loading: false,
   error: null,
+  user: null,
   fetchTasks: async () => {},
   addTask: () => {},
   updateTask: () => {},
   deleteTask: () => {},
   deleteCompletedTasks: () => {},
   handleLogout: () => {},
+  fetchUser: () => {},
 });
 
 export const DataProvider = ({ children }: { children: React.ReactNode }) => {
   const [tasks, setTasks] = useState<Task[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [user, setUser] = useState<User | null>(null);
   const navigate = useNavigate();
 
-  // Função para logout
+  // Fetch user data from JWT token
+  const fetchUser = () => {
+    const token = localStorage.getItem("token");
+    if (token) {
+      try {
+        const decoded = jwtDecode(token);
+        setUser({
+          name: decoded.name,
+          email: decoded.email,
+        });
+      } catch (error) {
+        console.error("Error decoding token:", error);
+        handleLogout();
+      }
+    }
+  };
+
+  // Logout function
   const handleLogout = () => {
     localStorage.removeItem("token");
     setTasks([]);
+    setUser(null);
     navigate("/login");
   };
 
-  // Função para verificar erros de autenticação
+  // Check for authentication errors
   const checkAuthError = (error: any) => {
     if (error.response?.status === 401 || error.response?.status === 403) {
       handleLogout();
@@ -52,13 +89,13 @@ export const DataProvider = ({ children }: { children: React.ReactNode }) => {
     return false;
   };
 
-  // Função para adicionar uma tarefa
+  // Add new task
   const addTask = (task: Task) => {
     const orderedTasks = orderTasks([...tasks, task]);
     setTasks(orderedTasks);
   };
 
-  // Função para atualizar uma tarefa
+  // Update existing task
   const updateTask = (id: string, updatedTask: Partial<Task>) => {
     const orderedTasks = orderTasks(
       tasks.map((task) => (task.id === id ? { ...task, ...updatedTask } : task))
@@ -66,19 +103,18 @@ export const DataProvider = ({ children }: { children: React.ReactNode }) => {
     setTasks(orderedTasks);
   };
 
-  // Função para deletar uma tarefa
+  // Delete single task
   const deleteTask = (id: string) => {
     setTasks(tasks.filter((task) => task.id !== id));
   };
 
+  // Fetch all tasks
   const fetchTasks = async () => {
-    console.log("Fetching tasks...");
     setLoading(true);
     setError(null);
     try {
       const token = localStorage.getItem("token");
       if (!token) {
-        console.log("No token, skipping fetch");
         setLoading(false);
         return;
       }
@@ -87,8 +123,7 @@ export const DataProvider = ({ children }: { children: React.ReactNode }) => {
       const orderedTasks = orderTasks(response.data);
       setTasks(orderedTasks);
     } catch (err: any) {
-      console.error("Erro ao buscar tarefas:", err);
-
+      console.error("Error fetching tasks:", err);
       if (!checkAuthError(err)) {
         setError("Failed to load tasks");
       }
@@ -97,10 +132,10 @@ export const DataProvider = ({ children }: { children: React.ReactNode }) => {
     }
   };
 
-  //excluir todas as tasks marcadas com completed
+  // Delete all completed tasks
   const deleteCompletedTasks = async () => {
     const confirmed = window.confirm(
-      "Tem certeza que deseja deletar todas as tarefas concluídas? Essa ação não pode ser desfeita."
+      "Are you sure you want to delete all completed tasks? This action cannot be undone."
     );
     if (!confirmed) return;
 
@@ -108,13 +143,14 @@ export const DataProvider = ({ children }: { children: React.ReactNode }) => {
       await api.delete("/tasks/bulk/completed");
       setTasks((prev) => prev.filter((task) => !task.completed));
     } catch (err: any) {
-      console.error("Erro ao deletar tarefas concluídas:", err);
+      console.error("Error deleting completed tasks:", err);
       if (!checkAuthError(err)) {
-        setError("Erro ao deletar tarefas concluídas");
+        setError("Error deleting completed tasks");
       }
     }
   };
 
+  // Set up response interceptor
   useEffect(() => {
     const responseInterceptor = api.interceptors.response.use(
       (response) => response,
@@ -131,7 +167,9 @@ export const DataProvider = ({ children }: { children: React.ReactNode }) => {
     };
   }, []);
 
+  // Initial data loading
   useEffect(() => {
+    fetchUser();
     fetchTasks();
   }, []);
 
@@ -141,12 +179,14 @@ export const DataProvider = ({ children }: { children: React.ReactNode }) => {
         tasks,
         loading,
         error,
+        user,
         fetchTasks,
         addTask,
         updateTask,
         deleteTask,
         handleLogout,
         deleteCompletedTasks,
+        fetchUser,
       }}
     >
       {children}

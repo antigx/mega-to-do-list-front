@@ -11,27 +11,22 @@ import type { ElementType } from "react";
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import api from "../services/api";
+import { useData } from "../contexts/DataContext";
 
 export default function Profile() {
   const navigate = useNavigate();
+  const { user } = useData();
+
   async function handleLogout() {
     try {
-      // 1. Chamada opcional para endpoint de logout no backend
     } catch (error) {
       console.error("Erro durante logout:", error);
     } finally {
-      // 2. Limpeza completa do frontend
       localStorage.removeItem("token");
-      localStorage.removeItem("user"); // Se você armazenar dados do usuário
-      sessionStorage.clear(); // Limpa sessionStorage se estiver usando
-
-      // 3. Remove o token do axios
+      localStorage.removeItem("user");
+      sessionStorage.clear();
       delete api.defaults.headers.common["Authorization"];
-
-      // 4. Redireciona para a página inicial
       navigate("/");
-
-      // 5. Recarrega a página para garantir limpeza completa do estado
       window.location.reload();
     }
   }
@@ -46,7 +41,7 @@ export default function Profile() {
           height={100}
           className="rounded-full"
         />
-        <h1 className="text-3xl font-bold">Jubs</h1>
+        <h1 className="text-3xl font-bold">{user?.name}</h1>
         <Link to="/editar-perfil">
           <Button text="Editar perfil" />
         </Link>
