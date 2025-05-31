@@ -6,7 +6,6 @@ import { useData } from "../contexts/DataContext";
 export default function Overview() {
   const { tasks } = useData();
   const [color, setColor] = useState<string>("");
-  const [completedCount, setCompletedCount] = useState(0);
   const [totalCount, setTotalCount] = useState(0);
   const [percentage, setPercentage] = useState(0);
 
@@ -24,7 +23,6 @@ export default function Overview() {
 
     const completed = pastTasks.filter((task) => task.completed);
 
-    setCompletedCount(completed.length);
     setTotalCount(pastTasks.length);
     setPercentage(
       pastTasks.length
