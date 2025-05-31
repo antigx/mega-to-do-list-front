@@ -56,12 +56,23 @@ export default function ProfileEdit() {
       console.log(response);
       await fetchUser();
       setSuccess(true);
-      setUser({
-        ...user,
-        name: formData.name,
-        email: formData.email,
-        static_num: formData.static_num,
-      });
+      console.log(
+        setUser({
+          ...user,
+          name: formData.name,
+          email: formData.email,
+          static_num: formData.static_num,
+        })
+      );
+      localStorage.setItem(
+        "user",
+        JSON.stringify({
+          name: formData.name,
+          userId: user.userId,
+          email: formData.email,
+          static_num: formData.static_num,
+        })
+      );
       setTimeout(() => navigate("/perfil"), 1500);
     } catch (err) {
       console.error("Erro ao atualizar perfil:", err);

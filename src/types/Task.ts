@@ -20,3 +20,11 @@ export interface Task {
 export type TaskFilter = "all" | "pending" | "done";
 
 export type PriorityFilter = 0 | 1 | 2 | 3; // 0 = Todas, 3 = Alta, 2 = Normal, 1 = Baixa
+
+export interface User {
+  userId: string;
+  name: string;
+  email: string;
+  password?: string;
+  static_num: number;
+}

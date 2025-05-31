@@ -23,6 +23,7 @@ export default function Profile({
 }) {
   const navigate = useNavigate();
   const { user } = useData();
+  console.log(user?.static_num);
 
   async function handleLogout() {
     try {

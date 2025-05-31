@@ -98,7 +98,7 @@ export function CarouselTasks() {
             <ClipboardDocumentIcon className="h-10 w-10 text-gray-400 mb-3" />
             <span>
               <h3 className="text-lg font-medium text-gray-700">
-                Nenhuma tarefa pendente
+                Nenhuma tarefa para hoje pendente
               </h3>
               <p className="text-gray-500 mt-1">
                 Adicione novas tarefas para começar

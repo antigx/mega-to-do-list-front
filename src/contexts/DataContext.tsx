@@ -8,7 +8,7 @@ import {
   type SetStateAction,
 } from "react";
 import api from "../services/api";
-import type { Task } from "../types/Task";
+import type { Task, User } from "../types/Task";
 import { useNavigate } from "react-router-dom";
 import orderTasks from "../utils/orderTasks";
 import { jwtDecode } from "jwt-decode";
@@ -22,13 +22,6 @@ declare module "jwt-decode" {
     static_num: number;
   }
 }
-
-type User = {
-  name: string;
-  userId: string;
-  email: string;
-  static_num: number;
-};
 
 type DataContextType = {
   tasks: Task[];
@@ -64,10 +57,12 @@ export const DataProvider = ({ children }: { children: React.ReactNode }) => {
   const [tasks, setTasks] = useState<Task[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [user, setUser] = useState<User | null>(null);
   const navigate = useNavigate();
 
-  // Fetch user data from JWT token
+  const [user, setUser] = useState<User | null>(() => {
+    const savedUser = localStorage.getItem("user");
+    return savedUser ? JSON.parse(savedUser) : null;
+  });
   const fetchUser = () => {
     const token = localStorage.getItem("token");
     if (token) {
@@ -79,6 +74,15 @@ export const DataProvider = ({ children }: { children: React.ReactNode }) => {
           email: decoded.email,
           static_num: decoded.static_num,
         });
+        localStorage.setItem(
+          "user",
+          JSON.stringify({
+            name: decoded.name,
+            userId: decoded.userId,
+            email: decoded.email,
+            static_num: decoded.static_num,
+          })
+        );
       } catch (error) {
         console.error("Error decoding token:", error);
         handleLogout();
@@ -89,6 +93,7 @@ export const DataProvider = ({ children }: { children: React.ReactNode }) => {
   // Logout function
   const handleLogout = () => {
     localStorage.removeItem("token");
+    localStorage.removeItem("user");
     setTasks([]);
     setUser(null);
     navigate("/login");
