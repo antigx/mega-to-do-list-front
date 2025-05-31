@@ -3,7 +3,7 @@ import Dashboard from "./pages/Dashboard";
 import "./index.css";
 import NavbarMobile from "./components/Navbar";
 import Home from "./pages/Home";
-import { type ReactNode } from "react";
+import { type ReactNode, useEffect, useState } from "react";
 import NotFound from "./pages/NotFound";
 import Login from "./pages/Login";
 import SignUp from "./pages/SignUp";
@@ -17,11 +17,12 @@ import Overview from "./pages/Overview";
 import EditProfile from "./pages/EditProfile";
 import NavBarDesktop from "./components/NavBarDesktop";
 import background from "./assets/background.png";
+import backgroundDark from "./assets/background-dark.png";
 import { DataProvider } from "./contexts/DataContext";
 import TaskDetails from "./pages/TaskDetails";
 
 const PrivateRoute = () => {
-  const token = localStorage.getItem("token"); // ou o nome que você usa para salvar o JWT
+  const token = localStorage.getItem("token");
   return token ? <Outlet /> : <Navigate to="/login" replace />;
 };
 
@@ -40,11 +41,23 @@ const LayoutWithoutNavbar = ({ children }: { children: ReactNode }) => (
 );
 
 function App() {
+  const [darkMode, setDarkMode] = useState(() => {
+    const savedMode = localStorage.getItem("darkMode");
+    return savedMode ? JSON.parse(savedMode) : false;
+  });
+  useEffect(() => {
+    if (darkMode) {
+      document.documentElement.classList.add("dark");
+    } else {
+      document.documentElement.classList.remove("dark");
+    }
+    localStorage.setItem("darkMode", JSON.stringify(darkMode));
+  }, [darkMode]);
   return (
     <main
-      className="h-screen w-full flex justify-center overflow-x-hidden"
+      className="h-screen w-full flex justify-center overflow-x-hidden dark:text-white"
       style={{
-        backgroundImage: `url(${background})`,
+        backgroundImage: `url(${darkMode ? backgroundDark : background})`,
         backgroundSize: "cover",
         backgroundPosition: "center",
         backgroundAttachment: "fixed",
@@ -75,7 +88,12 @@ function App() {
             <Route path="/dash" element={<Dashboard />} />
             <Route path="/tarefas" element={<Tasks />} />
             <Route path="/tarefa/:id" element={<TaskDetails />} />
-            <Route path="/perfil" element={<Profile />} />
+            <Route
+              path="/perfil"
+              element={
+                <Profile darkMode={darkMode} setDarkMode={setDarkMode} />
+              }
+            />
             <Route path="/editar-perfil" element={<EditProfile />} />
             <Route path="/notificacoes" element={<Notifications />} />
             <Route path="/add-tarefas" element={<AddTask />} />

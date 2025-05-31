@@ -7,13 +7,25 @@ import {
   TrophyIcon,
 } from "@heroicons/react/24/outline";
 import { PlayIcon } from "@heroicons/react/24/solid";
-import type { ElementType } from "react";
+import {
+  useEffect,
+  useState,
+  type Dispatch,
+  type ElementType,
+  type SetStateAction,
+} from "react";
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import api from "../services/api";
 import { useData } from "../contexts/DataContext";
 
-export default function Profile() {
+export default function Profile({
+  darkMode,
+  setDarkMode,
+}: {
+  darkMode: boolean;
+  setDarkMode: Dispatch<SetStateAction<boolean>>;
+}) {
   const navigate = useNavigate();
   const { user } = useData();
 
@@ -56,19 +68,19 @@ export default function Profile() {
             text={"Conquistas"}
             route="/conquistas"
           />
-          <span className="flex justify-between items-center border w-full h-15 px-4 bg-gray-primary rounded-lg shadow-md">
+          <span className="flex justify-between items-center border w-full h-15 px-4 bg-gray-primary rounded-lg shadow-md dark:bg-gray-800">
             <span className="flex gap-4 items-center">
               <MoonIcon className="w-8 h-8" />
-              <p className="text-xl font-bold">Dark Mode</p>
+              <p className="text-xl font-bold dark:text-white">Dark Mode</p>
             </span>
-            <ToggleSwitch checked={false} onChange={() => {}} />
+            <ToggleSwitch checked={darkMode} onChange={setDarkMode} />
           </span>
         </div>
       </div>
-      <span className="w-full flex justify-end py-2">
+      <span className="w-full flex justify-end py-2 px-4">
         <button
           onClick={handleLogout}
-          className="text-sm font-medium text-red-500 hover:underline hover:text-red-700 transition-colors"
+          className="text-sm font-medium text-red-500 hover:text-red-700 dark:text-red-400 dark:hover:text-red-300 transition-colors px-3 py-2 rounded-lg hover:bg-red-50 dark:hover:bg-red-900/20"
         >
           Sair da conta
         </button>
@@ -90,7 +102,7 @@ export function ProfileOptionSelect({
 }: ProfileOptionSelectProps) {
   return (
     <Link to={route}>
-      <span className="flex justify-between items-center border w-full h-15 px-4 bg-gray-primary rounded-lg shadow-md">
+      <span className="dark:bg-gray-800 dark:text-white flex justify-between items-center border w-full h-15 px-4 bg-gray-primary rounded-lg shadow-md">
         <span className="flex gap-4 items-center">
           <Icon className="w-8 h-8" />
           <p className="text-xl font-bold">{text}</p>
@@ -111,7 +123,7 @@ export function ToggleSwitch({ checked, onChange }: ToggleSwitchProps) {
       <div className="relative">
         <input
           type="checkbox"
-          className="sr-only"
+          className="sr-only peer"
           checked={checked}
           onChange={(e) => onChange(e.target.checked)}
         />

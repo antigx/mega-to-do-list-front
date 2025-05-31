@@ -36,7 +36,7 @@ export function CarouselFilterTasks({
   return (
     <div className="my-4 sm:mb-0 relative flex flex-col gap-2 items-center justify-center">
       {/* Filtros por status */}
-      <div className="overflow-visible -mx-6 w-full">
+      <div className="overflow-visible -mx-6 w-full md:w-auto">
         <Swiper
           slidesPerView="auto"
           spaceBetween={10}

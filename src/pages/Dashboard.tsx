@@ -14,7 +14,7 @@ export default function Dashboard() {
   const { user } = useData();
 
   return (
-    <div className="md:p-4">
+    <div className="md:p-4 ">
       <div className="flex justify-between py-4">
         <NavLink
           to="/perfil"

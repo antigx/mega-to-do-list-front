@@ -1,5 +1,12 @@
 // src/contexts/DataContext.tsx
-import { createContext, useContext, useState, useEffect } from "react";
+import {
+  createContext,
+  useContext,
+  useState,
+  useEffect,
+  type Dispatch,
+  type SetStateAction,
+} from "react";
 import api from "../services/api";
 import type { Task } from "../types/Task";
 import { useNavigate } from "react-router-dom";
@@ -25,6 +32,7 @@ type DataContextType = {
   loading: boolean;
   error: string | null;
   user: User | null;
+  setUser: Dispatch<SetStateAction<User | null>>;
   fetchTasks: () => Promise<void>;
   addTask: (task: Task) => void;
   updateTask: (id: string, updatedTask: Partial<Task>) => void;
@@ -39,6 +47,7 @@ const DataContext = createContext<DataContextType>({
   loading: false,
   error: null,
   user: null,
+  setUser: () => {},
   fetchTasks: async () => {},
   addTask: () => {},
   updateTask: () => {},
@@ -180,6 +189,7 @@ export const DataProvider = ({ children }: { children: React.ReactNode }) => {
         loading,
         error,
         user,
+        setUser,
         fetchTasks,
         addTask,
         updateTask,

@@ -1,6 +1,8 @@
 @import url("https://fonts.googleapis.com/css2?family=Inria+Serif:ital,wght@0,300;0,400;0,700;1,300;1,400;1,700&display=swap");
 @import "tailwindcss";
 
+@custom-variant dark (&:where(.dark, .dark *));
+
 :root {
   --font-heading: "Inria Serif", serif;
   --font-body: "Poppins", sans-serif;
@@ -15,6 +17,8 @@
   --color-gray-background: #f4f4f4;
   --color-gray-primary: #d9d9d9;
   --color-gray-secondary: #333333;
+
+  --color-gray-dark-background: #ffffff;
 }
 
 .icon-hover {
