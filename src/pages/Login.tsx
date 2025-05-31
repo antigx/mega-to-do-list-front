@@ -69,14 +69,14 @@ export default function Login() {
       </h1>
       <span className="w-full flex flex-col items-start">
         <h2 className="text-xl font-semibold">Entre na Sua Conta</h2>
-        <p className="text-gray-600 text-sm">
+        <p className="text-gray-600 dark:text-gray-200 text-sm">
           Digite seu email e senha para entrar
         </p>
       </span>
 
       <form
         onSubmit={handleSubmit}
-        className="flex flex-col gap-4 xl:flex-row w-full"
+        className="flex flex-col gap-4 xl:flex-row w-full items-center"
       >
         <InputSign
           text="Email"
@@ -96,23 +96,25 @@ export default function Login() {
           value={form.password}
           onChange={handleChange}
         />
-        <Button text="Entrar" handleClick={handleSubmit} />
       </form>
+      <Button text="Entrar" handleClick={handleSubmit} />
 
       {error && <p className="text-red-500 text-sm">{error}</p>}
 
       <Link
         to="#"
-        className="text-sm text-end text-black font-bold hover:underline"
+        className="text-sm text-end text-black dark:text-white font-bold hover:underline"
       >
         Esqueceu a senha?
       </Link>
 
       <div className="text-center w-full my-6">
         <div className="flex items-center justify-center gap-7">
-          <div className="bg-gray-secondary h-[4px] flex-1 rounded-full"></div>
-          <span className="text-black text-sm font-medium">ou</span>
-          <div className="bg-gray-secondary h-[4px] flex-1 rounded-full"></div>
+          <div className="bg-gray-secondary dark:bg-white h-[4px] flex-1 rounded-full"></div>
+          <span className="text-black dark:text-white text-sm font-medium">
+            ou
+          </span>
+          <div className="bg-gray-secondary dark:bg-white h-[4px] flex-1 rounded-full"></div>
         </div>
         <div className="flex justify-center mt-6">
           <GoogleLogin

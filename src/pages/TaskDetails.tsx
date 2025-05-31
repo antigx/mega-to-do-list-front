@@ -54,16 +54,12 @@ export default function TaskDetails() {
     setError(null);
 
     try {
-      // 1. Enviar para a API
       const response = await api.put(`/tasks/${id}`, editedTask);
 
-      // 2. Atualizar o contexto usando updateTask
       updateTask(id, response.data as Partial<Task>);
 
-      // 3. Atualizar o estado local
       setTask(response.data as Task);
 
-      // 4. Sair do modo de edição
       setIsEditing(false);
     } catch (err) {
       setError("Falha ao salvar tarefa");
@@ -141,13 +137,13 @@ export default function TaskDetails() {
   return (
     <div className="flex justify-center items-center min-h-[calc(100vh-4rem)] p-4 md:p-6">
       <div
-        className="rounded-xl shadow-sm w-full max-w-2xl overflow-hidden transition-all duration-200"
+        className="rounded-xl shadow-sm w-full max-w-2xl overflow-hidden 
+        transition-all duration-200"
         style={{
           backgroundColor: `${priorityColor}30`,
           border: `1px solid ${priorityColor}40`,
         }}
       >
-        {/* Header */}
         <div
           className="relative px-6 py-4 border-b"
           style={{ borderColor: `${priorityColor}20` }}
@@ -157,7 +153,7 @@ export default function TaskDetails() {
             className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-600 hover:text-gray-900 transition-colors duration-200 p-1 rounded-full hover:bg-gray-50"
             aria-label="Voltar"
           >
-            <ArrowLeftIcon className="h-5 w-5" />
+            <ArrowLeftIcon className="h-5 w-5 dark:text-white" />
           </button>
           {isEditing ? (
             <input
@@ -177,7 +173,6 @@ export default function TaskDetails() {
           )}
         </div>
 
-        {/* Body */}
         <div
           className="p-6 space-y-6"
           style={{ backgroundColor: `${priorityColor}05` }}
@@ -188,16 +183,15 @@ export default function TaskDetails() {
             </div>
           )}
 
-          {/* Descrição */}
           <section>
-            <h2 className="text-xs font-semibold text-gray-600 uppercase tracking-wider mb-2">
+            <h2 className="text-xs font-semibold text-gray-600 dark:text-white uppercase tracking-wider mb-2">
               Descrição
             </h2>
             {isEditing ? (
               <textarea
                 value={editedTask?.description || ""}
                 onChange={(e) => handleChange("description", e.target.value)}
-                className="w-full text-gray-700 p-4 rounded-lg border shadow-xs focus:outline-none focus:ring-1 focus:ring-indigo-500"
+                className="w-full text-gray-700 dark:text-white p-4 rounded-lg border shadow-xs focus:outline-none focus:ring-1 focus:ring-indigo-500"
                 style={{
                   backgroundColor: `${priorityColor}08`,
                   borderColor: `${priorityColor}15`,
@@ -207,7 +201,7 @@ export default function TaskDetails() {
               />
             ) : (
               <div
-                className="text-gray-700 p-4 rounded-lg border shadow-xs"
+                className="text-gray-700 dark:text-white p-4 rounded-lg border shadow-xs"
                 style={{
                   backgroundColor: `${priorityColor}08`,
                   borderColor: `${priorityColor}15`,
@@ -346,7 +340,6 @@ export default function TaskDetails() {
             />
           </section>
 
-          {/* Ações */}
           <div className="flex flex-col-reverse sm:flex-row justify-end gap-3 pt-4">
             {isEditing ? (
               <>
@@ -376,7 +369,7 @@ export default function TaskDetails() {
               <>
                 <button
                   onClick={() => navigate(-1)}
-                  className="px-4 py-2 border rounded-lg text-gray-700 hover:bg-white transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2"
+                  className="px-4 py-2 border rounded-lg text-gray-700 dark:text-white hover:bg-white transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2"
                   style={{
                     borderColor: `${priorityColor}30`,
                     backgroundColor: `${priorityColor}10`,
@@ -424,7 +417,7 @@ function InfoItem({
         borderColor: `${color}20`,
       }}
     >
-      <div className="flex items-center gap-2 text-xs text-gray-600 mb-1 uppercase tracking-wider">
+      <div className="flex items-center gap-2 text-xs text-gray-600 dark:text-white mb-1 uppercase tracking-wider">
         {icon}
         <span className="font-medium">{label}</span>
       </div>

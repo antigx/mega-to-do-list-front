@@ -85,7 +85,7 @@ export default function AddTask() {
                       name="title"
                       value={form.title}
                       onChange={handleChange}
-                      className="text-lg font-bold w-full bg-transparent focus:outline-none"
+                      className="dark:text-black text-lg font-bold w-full bg-transparent focus:outline-none"
                       placeholder="Título da tarefa"
                     />
                   </span>
@@ -100,7 +100,7 @@ export default function AddTask() {
                   name="description"
                   value={form.description}
                   onChange={handleChange}
-                  className="text-lg w-full min-h-40 align-top bg-transparent focus:outline-none"
+                  className="dark:text-black text-lg w-full min-h-40 align-top bg-transparent focus:outline-none"
                   placeholder="Descrição de tarefa"
                 />
               </div>

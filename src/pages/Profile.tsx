@@ -2,18 +2,13 @@ import Header from "../components/Header";
 import profileImage from "../assets/profile.jpg";
 import Button from "../components/Button";
 import {
+  ArrowRightStartOnRectangleIcon,
   MoonIcon,
   PresentationChartBarIcon,
   TrophyIcon,
 } from "@heroicons/react/24/outline";
 import { PlayIcon } from "@heroicons/react/24/solid";
-import {
-  useEffect,
-  useState,
-  type Dispatch,
-  type ElementType,
-  type SetStateAction,
-} from "react";
+import { type Dispatch, type ElementType, type SetStateAction } from "react";
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import api from "../services/api";
@@ -43,7 +38,7 @@ export default function Profile({
     }
   }
   return (
-    <>
+    <section className="flex flex-col justify-center h-full">
       <Header text="Seu Perfil" />
       <div className="flex flex-col  gap-4 items-center py-4 h-full">
         <img
@@ -80,12 +75,13 @@ export default function Profile({
       <span className="w-full flex justify-end py-2 px-4">
         <button
           onClick={handleLogout}
-          className="text-sm font-medium text-red-500 hover:text-red-700 dark:text-red-400 dark:hover:text-red-300 transition-colors px-3 py-2 rounded-lg hover:bg-red-50 dark:hover:bg-red-900/20"
+          className="flex items-center gap-2 text-md font-medium dark:text-white hover:text-red-700 dark:text-red-400 dark:hover:text-red-300 transition-colors px-3 py-2 rounded-lg hover:bg-red-50 dark:hover:bg-red-900/20"
         >
-          Sair da conta
+          Sair da Conta
+          <ArrowRightStartOnRectangleIcon className="w-8 h-8" />
         </button>
       </span>
-    </>
+    </section>
   );
 }
 
@@ -102,7 +98,7 @@ export function ProfileOptionSelect({
 }: ProfileOptionSelectProps) {
   return (
     <Link to={route}>
-      <span className="dark:bg-gray-800 dark:text-white flex justify-between items-center border w-full h-15 px-4 bg-gray-primary rounded-lg shadow-md">
+      <span className="dark:text-black flex justify-between items-center border w-full h-15 px-4 bg-gray-primary rounded-lg shadow-md">
         <span className="flex gap-4 items-center">
           <Icon className="w-8 h-8" />
           <p className="text-xl font-bold">{text}</p>

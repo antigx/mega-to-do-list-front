@@ -36,6 +36,9 @@ export default function Button({
                 focus:ring-2
                 focus:ring-gray-400
                 active:scale-[0.98]
+                dark:text-black
+                dark:bg-white
+                font-bold
             "
     >
       {text}

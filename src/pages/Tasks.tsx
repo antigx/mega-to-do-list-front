@@ -86,7 +86,6 @@ export default function Tasks() {
         </button>
       </div>
 
-      {/* Mostra os controles de data apenas no modo "Por Data" */}
       {viewMode === "byDate" && (
         <>
           {/* Controle de mês */}

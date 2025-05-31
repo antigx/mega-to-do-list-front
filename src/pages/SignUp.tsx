@@ -60,7 +60,9 @@ export default function Cadastro() {
       </span>
       <span className="w-full flex flex-col items-start">
         <h2 className="text-3xl font-semibold">Cadastro</h2>
-        <p className="text-gray-600 text-md">Crie uma conta para continuar!</p>
+        <p className="text-gray-600 dark:text-gray-200 text-md">
+          Crie uma conta para continuar!
+        </p>
       </span>
 
       <form
@@ -97,7 +99,11 @@ export default function Cadastro() {
         <Button text="Cadastrar" handleClick={handleSubmit} />
       </form>
 
-      {error && <p className="text-red-500">{error}</p>}
+      {error && (
+        <p className="text-red-500 bg-black/30 p-2 rounded-lg border border-red-500 font-bold">
+          {error}
+        </p>
+      )}
 
       <Link to="/login">Já possui uma conta? Faça login.</Link>
     </div>

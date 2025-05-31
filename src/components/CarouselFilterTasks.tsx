@@ -53,8 +53,8 @@ export function CarouselFilterTasks({
                 className={`flex items-center justify-center min-w-[60px] h-full py-2 px-5 rounded-2xl cursor-pointer
                 ${
                   filterCompleted === option.value
-                    ? "bg-gray-secondary text-white"
-                    : "border-2 border-gray-200/70 bg-gray-primary"
+                    ? "bg-gray-secondary text-white dark:border-white dark:border"
+                    : "border-2 border-gray-200/70 bg-gray-primary dark:text-black"
                 }
                 transition-all duration-200 ease-out
                 hover:shadow-md hover:scale-[1.03] hover:border-gray-secondary
@@ -70,7 +70,7 @@ export function CarouselFilterTasks({
           ))}
 
           <SwiperSlide className="!w-auto h-auto">
-            <div className="relative">
+            <div className="relative dark:text-black">
               <select
                 value={filterPriority}
                 onChange={(e) =>

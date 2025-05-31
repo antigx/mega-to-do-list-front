@@ -55,7 +55,7 @@ function App() {
   }, [darkMode]);
   return (
     <main
-      className="h-screen w-full flex justify-center overflow-x-hidden dark:text-white"
+      className="h-screen w-full flex justify-center overflow-x-hidden dark:text-white md:pb-16"
       style={{
         backgroundImage: `url(${darkMode ? backgroundDark : background})`,
         backgroundSize: "cover",

@@ -47,19 +47,20 @@ export function TaskCardDash({ task }: TaskCardProps) {
     <div
       role="listitem"
       aria-label={`Task: ${task.title}`}
-      className={`rounded-[15px] p-4 w-full overflow-visible shadow-sm hover:shadow-md transition-shadow duration-200`}
+      className={`rounded-[15px] p-4 w-full overflow-visible 
+        shadow-sm hover:shadow-md transition-shadow duration-200`}
       style={{
-        backgroundColor: `${color}50`,
+        backgroundColor: `${color}80`,
       }}
     >
       <div className="flex gap-5 items-start justify-between">
         <div>
-          <h3 className="text-lg font-semibold text-gray-800 line-clamp-1">
+          <h3 className="text-lg font-semibold text-gray-800 dark:text-white line-clamp-1">
             {task.title}
           </h3>
 
           {task.description && (
-            <p className="text-sm text-gray-600 mt-1 line-clamp-2">
+            <p className="text-sm text-gray-600 dark:text-gray-200 mt-1 line-clamp-2">
               {task.description}
             </p>
           )}
@@ -79,7 +80,7 @@ export function TaskCardDash({ task }: TaskCardProps) {
         {task.remaining && (
           <span className="text-xs text-gray-500">{task.remaining}</span>
         )}
-        <span className="text-xs text-gray-500 ml-auto h-7 w-7">
+        <span className="text-xs text-gray-500 dark:text-white ml-auto h-7 w-7">
           <Link to={`/tarefa/${task.id}`}>
             <ChevronDoubleRightIcon />
           </Link>
@@ -120,15 +121,13 @@ export function TaskCard({ task }: TaskCardProps) {
     <div
       role="listitem"
       aria-label={`Task: ${task.title}`}
-      className="bg-gray-primary rounded-lg px-4 py-3 w-full shadow-sm hover:shadow-md transition-all duration-200 flex justify-between gap-4"
+      className="rounded-lg px-4 py-3 w-full shadow-sm hover:shadow-md transition-all duration-200 flex justify-between gap-4"
       style={{
-        backgroundColor: `${color}15`,
+        backgroundColor: `${color}60`,
         borderLeft: `4px solid ${color}`,
       }}
     >
-      {/* Main Content */}
       <div className="flex-1 min-w-0 space-y-2">
-        {/* Title with completion status */}
         <div className="flex items-center gap-3">
           <button
             onClick={toggleComplete}
@@ -150,22 +149,20 @@ export function TaskCard({ task }: TaskCardProps) {
 
           <h3
             className={`text-lg font-semibold truncate ${
-              completed ? "line-through text-gray-500" : "text-gray-800"
+              completed
+                ? "line-through text-gray-500 "
+                : "text-gray-800 dark:text-white"
             }`}
           >
             {task.title}
           </h3>
         </div>
-
-        {/* Description */}
         {task.description && (
-          <p className="text-sm text-gray-600 ml-8 line-clamp-2">
+          <p className="text-sm text-gray-600 dark:text-gray-200 ml-8 line-clamp-2">
             {task.description}
           </p>
         )}
-
-        {/* Dates */}
-        <div className="flex flex-wrap gap-3 ml-8 text-xs text-gray-500">
+        <div className="flex flex-wrap gap-3 ml-8 text-xs text-gray-500 dark:text-gray-100">
           {task.start_date && (
             <div className="flex items-center gap-1">
               <CalendarIcon className="w-3 h-3" />
@@ -180,21 +177,16 @@ export function TaskCard({ task }: TaskCardProps) {
           )}
         </div>
       </div>
-
-      {/* Action Buttons */}
       <div className="flex flex-col items-end justify-between">
-        <div className="flex gap-2">
-          {/* Details Link */}
+        <div className="flex gap-2 ">
           <Link
             to={`/tarefa/${task.id}`}
             aria-label="Ver detalhes da tarefa"
             className="p-1.5 rounded-full hover:bg-gray-100 transition-colors text-gray-500 hover:text-gray-700"
             title="Ver detalhes"
           >
-            <ChevronDoubleRightIcon className="w-5 h-5" />
+            <ChevronDoubleRightIcon className="w-5 h-5 dark:text-gray-100" />
           </Link>
-
-          {/* Delete Button */}
           {!confirmDelete ? (
             <button
               onClick={() => setConfirmDelete(true)}
@@ -229,7 +221,6 @@ export function TaskCard({ task }: TaskCardProps) {
   );
 }
 
-// Helper function to format dates
 function formatDate(dateString: Date): string {
   return new Date(dateString).toLocaleDateString("pt-BR");
 }
