@@ -53,7 +53,7 @@ export default function Cronometer({
           const min = String(Math.floor(remainingTime / 60)).padStart(2, "0");
           const sec = String(remainingTime % 60).padStart(2, "0");
           return (
-            <div className="text-3xl sm:text-4xl md:text-5xl font-bold text-gray-800">
+            <div className="text-3xl sm:text-4xl md:text-5xl font-bold text-gray-800 dark:text-white">
               {`${min}:${sec}`}
             </div>
           );
@@ -73,12 +73,13 @@ export default function Cronometer({
           onClick={() => {
             setPlay(!play);
           }}
-          className="bg-gray-secondary p-4 rounded-full border"
+          className="bg-gray-secondary p-4 rounded-full border hover:bg-gray-primary hover:text-black
+hover:bg-gray-primary hover:text-black"
         >
           {play ? (
-            <PauseIcon className="w-12 text-white " />
+            <PauseIcon className="w-12  " />
           ) : (
-            <PlayIcon className="w-12 text-white" />
+            <PlayIcon className="w-12" />
           )}
         </div>
         <div

@@ -22,6 +22,7 @@ export default function Cadastro() {
     name: "",
     email: "",
     password: "",
+    static_num: Math.floor(Math.random() * 10000),
   });
   const [error, setError] = useState("");
 
@@ -69,6 +70,14 @@ export default function Cadastro() {
         onSubmit={handleSubmit}
         className="flex flex-col gap-4 justify-between items-center w-full"
       >
+        <input
+          hidden
+          type="number"
+          id="seedId"
+          name="static_num"
+          value={form.static_num}
+          onChange={handleChange}
+        />
         <InputSign
           text="Nome Completo"
           type="text"

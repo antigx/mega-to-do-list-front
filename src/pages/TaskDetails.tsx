@@ -10,6 +10,7 @@ import {
 } from "@heroicons/react/24/outline";
 import { getColor } from "../utils/getColor";
 import api from "../services/api";
+import DeleteTaskButton from "../components/DeleteTaksButton";
 
 export default function TaskDetails() {
   const { id } = useParams<{ id: string }>();
@@ -145,7 +146,7 @@ export default function TaskDetails() {
         }}
       >
         <div
-          className="relative px-6 py-4 border-b"
+          className="relative px-6 py-4 border-b flex"
           style={{ borderColor: `${priorityColor}20` }}
         >
           <button
@@ -153,7 +154,7 @@ export default function TaskDetails() {
             className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-600 hover:text-gray-900 transition-colors duration-200 p-1 rounded-full hover:bg-gray-50"
             aria-label="Voltar"
           >
-            <ArrowLeftIcon className="h-5 w-5 dark:text-white" />
+            <ArrowLeftIcon className="h-5 w-5 dark:text-black" />
           </button>
           {isEditing ? (
             <input
@@ -171,10 +172,11 @@ export default function TaskDetails() {
               {task.title}
             </h1>
           )}
+          <DeleteTaskButton taskId={task.id} />
         </div>
 
         <div
-          className="p-6 space-y-6"
+          className="p-6 space-y-6 "
           style={{ backgroundColor: `${priorityColor}05` }}
         >
           {error && (
@@ -182,163 +184,138 @@ export default function TaskDetails() {
               {error}
             </div>
           )}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            {/* Seção de Descrição - Ocupa toda a altura disponível */}
+            <section className="flex flex-col h-full">
+              <h2 className="text-xs font-semibold text-gray-600 dark:text-white uppercase tracking-wider mb-2">
+                Descrição
+              </h2>
+              {isEditing ? (
+                <textarea
+                  value={editedTask?.description || ""}
+                  onChange={(e) => handleChange("description", e.target.value)}
+                  className="flex-grow w-full text-gray-700 dark:text-white p-4 rounded-lg border shadow-xs focus:outline-none focus:ring-1 focus:ring-indigo-500"
+                  style={{
+                    backgroundColor: `${priorityColor}08`,
+                    borderColor: `${priorityColor}15`,
+                    minHeight: "100px",
+                  }}
+                  placeholder="Adicione uma descrição..."
+                />
+              ) : (
+                <div
+                  className="flex-grow text-gray-700 dark:text-white p-4 rounded-lg border shadow-xs"
+                  style={{
+                    backgroundColor: `${priorityColor}08`,
+                    borderColor: `${priorityColor}15`,
+                  }}
+                >
+                  {task.description || (
+                    <span className="text-gray-500">
+                      Nenhuma descrição fornecida
+                    </span>
+                  )}
+                </div>
+              )}
+            </section>
 
-          <section>
-            <h2 className="text-xs font-semibold text-gray-600 dark:text-white uppercase tracking-wider mb-2">
-              Descrição
-            </h2>
-            {isEditing ? (
-              <textarea
-                value={editedTask?.description || ""}
-                onChange={(e) => handleChange("description", e.target.value)}
-                className="w-full text-gray-700 dark:text-white p-4 rounded-lg border shadow-xs focus:outline-none focus:ring-1 focus:ring-indigo-500"
-                style={{
-                  backgroundColor: `${priorityColor}08`,
-                  borderColor: `${priorityColor}15`,
-                  minHeight: "100px",
-                }}
-                placeholder="Adicione uma descrição..."
+            {/* Seção de Informações - Grid com altura total */}
+            <section className="grid grid-cols-1 gap-4 h-full">
+              <InfoItem
+                icon={
+                  <CalendarIcon
+                    className="w-5 h-5"
+                    style={{ color: priorityColor }}
+                  />
+                }
+                label="Data de Término"
+                value={
+                  isEditing ? (
+                    <input
+                      type="date"
+                      value={
+                        editedTask?.end_date?.toString().split("T")[0] || ""
+                      }
+                      onChange={(e) =>
+                        handleChange(
+                          "end_date",
+                          e.target.value ? new Date(e.target.value) : null
+                        )
+                      }
+                      className="bg-transparent border-b border-gray-300 focus:outline-none focus:border-indigo-500"
+                    />
+                  ) : task.end_date ? (
+                    new Date(task.end_date).toLocaleDateString("pt-BR", {
+                      day: "numeric",
+                      month: "long",
+                      year: "numeric",
+                    })
+                  ) : (
+                    "Não definida"
+                  )
+                }
+                color={priorityColor}
+                isEditing={isEditing}
               />
-            ) : (
-              <div
-                className="text-gray-700 dark:text-white p-4 rounded-lg border shadow-xs"
-                style={{
-                  backgroundColor: `${priorityColor}08`,
-                  borderColor: `${priorityColor}15`,
-                }}
-              >
-                {task.description || (
-                  <span className="text-gray-500">
-                    Nenhuma descrição fornecida
-                  </span>
-                )}
-              </div>
-            )}
-          </section>
-
-          {/* Grid de Infos */}
-          <section className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <InfoItem
-              icon={
-                <CalendarIcon
-                  className="w-5 h-5"
-                  style={{ color: priorityColor }}
-                />
-              }
-              label="Data de Início"
-              value={
-                isEditing ? (
-                  <input
-                    type="date"
-                    value={
-                      editedTask?.start_date.toString().split("T")[0] || ""
-                    }
-                    onChange={(e) =>
-                      handleChange("start_date", new Date(e.target.value))
-                    }
-                    className="bg-transparent border-b border-gray-300 focus:outline-none focus:border-indigo-500"
+              <InfoItem
+                icon={
+                  <FlagIcon
+                    className="w-5 h-5"
+                    style={{ color: priorityColor }}
                   />
-                ) : (
-                  new Date(task.start_date).toLocaleDateString("pt-BR", {
-                    day: "numeric",
-                    month: "long",
-                    year: "numeric",
-                  })
-                )
-              }
-              color={priorityColor}
-              isEditing={isEditing}
-            />
-            <InfoItem
-              icon={
-                <CalendarIcon
-                  className="w-5 h-5"
-                  style={{ color: priorityColor }}
-                />
-              }
-              label="Data de Término"
-              value={
-                isEditing ? (
-                  <input
-                    type="date"
-                    value={editedTask?.end_date?.toString().split("T")[0] || ""}
-                    onChange={(e) =>
-                      handleChange(
-                        "end_date",
-                        e.target.value ? new Date(e.target.value) : null
-                      )
-                    }
-                    className="bg-transparent border-b border-gray-300 focus:outline-none focus:border-indigo-500"
+                }
+                label="Prioridade"
+                value={
+                  isEditing ? (
+                    <select
+                      value={editedTask?.priority || "2"}
+                      onChange={(e) => handleChange("priority", e.target.value)}
+                      className="bg-transparent border-b border-gray-300 focus:outline-none focus:border-indigo-500"
+                    >
+                      <option value={1}>Baixa</option>
+                      <option value={2}>Normal</option>
+                      <option value={3}>Alta</option>
+                    </select>
+                  ) : (
+                    getPriorityText(task.priority ?? 2)
+                  )
+                }
+                color={priorityColor}
+                isEditing={isEditing}
+              />
+              <InfoItem
+                icon={
+                  <CheckCircleIcon
+                    className="w-5 h-5"
+                    style={{
+                      color: task.completed ? "#16a34a" : priorityColor,
+                    }}
                   />
-                ) : task.end_date ? (
-                  new Date(task.end_date).toLocaleDateString("pt-BR", {
-                    day: "numeric",
-                    month: "long",
-                    year: "numeric",
-                  })
-                ) : (
-                  "Não definida"
-                )
-              }
-              color={priorityColor}
-              isEditing={isEditing}
-            />
-            <InfoItem
-              icon={
-                <FlagIcon
-                  className="w-5 h-5"
-                  style={{ color: priorityColor }}
-                />
-              }
-              label="Prioridade"
-              value={
-                isEditing ? (
-                  <select
-                    value={editedTask?.priority || "2"}
-                    onChange={(e) => handleChange("priority", e.target.value)}
-                    className="bg-transparent border-b border-gray-300 focus:outline-none focus:border-indigo-500"
-                  >
-                    <option value={1}>Baixa</option>
-                    <option value={2}>Normal</option>
-                    <option value={3}>Alta</option>
-                  </select>
-                ) : (
-                  getPriorityText(task.priority ?? 2)
-                )
-              }
-              color={priorityColor}
-              isEditing={isEditing}
-            />
-            <InfoItem
-              icon={
-                <CheckCircleIcon
-                  className="w-5 h-5"
-                  style={{ color: task.completed ? "#16a34a" : priorityColor }}
-                />
-              }
-              label="Status"
-              value={
-                isEditing ? (
-                  <select
-                    value={editedTask?.completed ? "true" : "false"}
-                    onChange={(e) =>
-                      handleChange("completed", e.target.value === "true")
-                    }
-                    className="bg-transparent border-b border-gray-300 focus:outline-none focus:border-indigo-500"
-                  >
-                    <option value="false">Pendente</option>
-                    <option value="true">Concluída</option>
-                  </select>
-                ) : task.completed ? (
-                  "Concluída"
-                ) : (
-                  "Pendente"
-                )
-              }
-              color={task.completed ? "text-green-600" : priorityColor}
-              isEditing={isEditing}
-            />
-          </section>
+                }
+                label="Status"
+                value={
+                  isEditing ? (
+                    <select
+                      value={editedTask?.completed ? "true" : "false"}
+                      onChange={(e) =>
+                        handleChange("completed", e.target.value === "true")
+                      }
+                      className="bg-transparent border-b border-gray-300 focus:outline-none focus:border-indigo-500"
+                    >
+                      <option value="false">Pendente</option>
+                      <option value="true">Concluída</option>
+                    </select>
+                  ) : task.completed ? (
+                    "Concluída"
+                  ) : (
+                    "Pendente"
+                  )
+                }
+                color={task.completed ? "text-green-600" : priorityColor}
+                isEditing={isEditing}
+              />
+            </section>
+          </div>
 
           <div className="flex flex-col-reverse sm:flex-row justify-end gap-3 pt-4">
             {isEditing ? (
@@ -346,7 +323,7 @@ export default function TaskDetails() {
                 <button
                   onClick={handleDiscard}
                   disabled={isLoading}
-                  className="px-4 py-2 border rounded-lg text-gray-700 hover:bg-white transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 disabled:opacity-50"
+                  className="px-4 py-2 border rounded-lg text-gray-700 dark:text-gray-200 hover:bg-white transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 disabled:opacity-50"
                   style={{
                     borderColor: `${priorityColor}30`,
                     backgroundColor: `${priorityColor}10`,

@@ -11,8 +11,15 @@ import api from "../services/api";
 import { useNavigate, type NavigateFunction } from "react-router-dom";
 import { useData } from "../contexts/DataContext";
 import type { Task } from "../types/Task";
+import { getColor } from "../utils/getColor";
+import { format } from "date-fns-tz";
 
 setDefaultOptions({ locale: ptBR });
+
+const formatDateLocal = (date: Date) =>
+  format(date, "yyyy-MM-dd'T'HH:mm:ssXXX", {
+    timeZone: Intl.DateTimeFormat().resolvedOptions().timeZone,
+  });
 
 interface TaskForm {
   title: string;
@@ -28,7 +35,7 @@ export default function AddTask() {
     title: "",
     description: "",
     start_date: new Date(),
-    end_date: new Date(Date.now() + 86400000),
+    end_date: new Date(),
     priority: 2,
   });
   const { addTask } = useData();
@@ -52,11 +59,19 @@ export default function AddTask() {
 
   const handleSubmit = async () => {
     try {
+      // Força a data de término para o fim do dia local
+      const fixedEndDate = new Date(form.end_date);
+      fixedEndDate.setHours(23, 59, 59, 999);
+
+      const fixedStartDate = new Date(form.start_date);
+      fixedStartDate.setHours(0, 0, 0, 0);
+
       const taskData = {
         ...form,
-        end_date: form.end_date.toISOString(),
-        start_date: form.start_date.toISOString(),
+        start_date: formatDateLocal(fixedStartDate),
+        end_date: formatDateLocal(fixedEndDate),
       };
+
       const response = await api.post("/tasks", taskData);
       addTask(response.data as Task);
       navigate("/dash", { state: { shouldRefresh: true } });
@@ -107,21 +122,14 @@ export default function AddTask() {
 
               <div className="flex flex-col gap-6 w-full order-3 lg:order-2">
                 <DatePicker
-                  selected={form.start_date}
-                  onChange={(date) => handleDateChange(date, "start_date")}
-                  customInput={<CustomDateInput label="Data de término" />}
-                  dateFormat="dd MMMM, yyyy"
-                  popperClassName="z-50"
-                  popperPlacement="bottom-start"
-                />
-                <DatePicker
                   selected={form.end_date}
                   onChange={(date) => handleDateChange(date, "end_date")}
                   customInput={<CustomDateInput label="Data de término" />}
                   dateFormat="dd MMMM, yyyy"
-                  minDate={form.start_date}
-                  popperClassName="z-50"
+                  minDate={new Date()}
                   popperPlacement="bottom-start"
+                  portalId="root-portal" // ID da div principal (geralmente root)
+                  popperClassName="z-50"
                 />
               </div>
 
@@ -131,36 +139,30 @@ export default function AddTask() {
                   <span>
                     <p className="text-sm text-gray-600">Prioridade</p>
                     <div className="flex gap-3">
-                      <button
-                        onClick={() => setForm({ ...form, priority: 1 })}
-                        className={`text-lg font-medium ${
-                          form.priority === 1
-                            ? "text-[#33C1FF]"
-                            : "text-gray-400"
-                        }`}
-                      >
-                        Baixa
-                      </button>
-                      <button
-                        onClick={() => setForm({ ...form, priority: 2 })}
-                        className={`text-lg font-medium ${
-                          form.priority === 2
-                            ? "text-[#28A745]"
-                            : "text-gray-400"
-                        }`}
-                      >
-                        Normal
-                      </button>
-                      <button
-                        onClick={() => setForm({ ...form, priority: 3 })}
-                        className={`text-lg font-medium ${
-                          form.priority === 3
-                            ? "text-[#FF5733]"
-                            : "text-gray-400"
-                        }`}
-                      >
-                        Alta
-                      </button>
+                      {[1, 2, 3].map((priority) => (
+                        <button
+                          key={priority}
+                          onClick={() =>
+                            setForm({
+                              ...form,
+                              priority: priority as 1 | 2 | 3,
+                            })
+                          }
+                          className="text-lg font-medium text-gray-400"
+                          style={{
+                            color:
+                              form.priority === priority
+                                ? getColor(priority as 1 | 2 | 3)
+                                : "",
+                          }}
+                        >
+                          {priority === 1
+                            ? "Baixa"
+                            : priority === 2
+                            ? "Normal"
+                            : "Alta"}
+                        </button>
+                      ))}
                     </div>
                   </span>
                 </span>
@@ -176,7 +178,7 @@ export default function AddTask() {
                   name="description"
                   value={form.description}
                   onChange={handleChange}
-                  className="text-lg w-full flex-grow min-h-[200px] align-top bg-transparent focus:outline-none"
+                  className="dark:text-black text-lg w-full flex-grow min-h-[200px] align-top bg-transparent focus:outline-none"
                   placeholder="Descrição de tarefa"
                 />
               </div>

@@ -1,5 +1,4 @@
 import Header from "../components/Header";
-import profileImage from "../assets/profile.jpg";
 import Button from "../components/Button";
 import {
   ArrowRightStartOnRectangleIcon,
@@ -13,6 +12,7 @@ import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import api from "../services/api";
 import { useData } from "../contexts/DataContext";
+import { getAvatar } from "../utils/getAvatar";
 
 export default function Profile({
   darkMode,
@@ -42,11 +42,11 @@ export default function Profile({
       <Header text="Seu Perfil" />
       <div className="flex flex-col  gap-4 items-center py-4 h-full">
         <img
-          src={profileImage}
+          src={getAvatar(user?.static_num ?? 0)}
           alt="Profile"
-          width={100}
-          height={100}
-          className="rounded-full"
+          width={150}
+          height={150}
+          className="rounded-full bg-gray-primary"
         />
         <h1 className="text-3xl font-bold">{user?.name}</h1>
         <Link to="/editar-perfil">

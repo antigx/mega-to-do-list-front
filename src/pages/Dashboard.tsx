@@ -1,12 +1,12 @@
 import TaskPPriority from "../components/TaskPPriority";
 import TodayTasks from "../components/TodayTasks";
-import profileImage from "../assets/profile.jpg";
 import { CarouselTasks } from "../components/Carousels";
 import { ButtonNotification } from "../components/Button";
 import { NavLink } from "react-router-dom";
 import { useData } from "../contexts/DataContext";
 import { useState } from "react";
 import AllTasks from "../components/AllTasks";
+import { getAvatar } from "../utils/getAvatar";
 
 export default function Dashboard() {
   const { tasks, loading, error } = useData();
@@ -21,11 +21,11 @@ export default function Dashboard() {
           className="flex items-center gap-4 hover:opacity-80 transition-opacity"
         >
           <img
-            src={profileImage}
+            src={getAvatar(user?.static_num ?? 0)}
             alt="Profile"
-            width={40}
-            height={40}
-            className="rounded-full object-cover"
+            width={60}
+            height={60}
+            className="rounded-full object-cover bg-gray-primary"
           />
           <div>
             <p className="text-gray-600 dark:text-white">Olá,</p>

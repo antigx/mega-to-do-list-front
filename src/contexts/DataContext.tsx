@@ -17,14 +17,17 @@ import { jwtDecode } from "jwt-decode";
 declare module "jwt-decode" {
   interface JwtPayload {
     name: string;
+    userId: string;
     email: string;
-    // Add other claims you expect
+    static_num: number;
   }
 }
 
 type User = {
   name: string;
+  userId: string;
   email: string;
+  static_num: number;
 };
 
 type DataContextType = {
@@ -72,7 +75,9 @@ export const DataProvider = ({ children }: { children: React.ReactNode }) => {
         const decoded = jwtDecode(token);
         setUser({
           name: decoded.name,
+          userId: decoded.userId,
           email: decoded.email,
+          static_num: decoded.static_num,
         });
       } catch (error) {
         console.error("Error decoding token:", error);
@@ -144,7 +149,7 @@ export const DataProvider = ({ children }: { children: React.ReactNode }) => {
   // Delete all completed tasks
   const deleteCompletedTasks = async () => {
     const confirmed = window.confirm(
-      "Are you sure you want to delete all completed tasks? This action cannot be undone."
+      "Tem certeza que deseja deletar todas as tarefas concluídas? Esta ação não pode ser desfeita."
     );
     if (!confirmed) return;
 

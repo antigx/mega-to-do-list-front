@@ -1,8 +1,8 @@
 import type { Task } from "../types/Task";
+import { getColor } from "../utils/getColor";
 import PriorityGroupTask from "./PriorityGroupTask";
 
 export default function TaskPriority({ tasks }: { tasks: Task[] }) {
-  // Group tasks by priority
   const highPriorityTasks = tasks.filter((task) => task.priority === 3);
   const normalPriorityTasks = tasks.filter((task) => task.priority === 2);
   const lowPriorityTasks = tasks.filter((task) => task.priority === 1);
@@ -12,21 +12,21 @@ export default function TaskPriority({ tasks }: { tasks: Task[] }) {
       name: "Prioridade Alta",
       tasks: highPriorityTasks,
       nTasks: highPriorityTasks.length,
-      color: "#FF5733",
+      color: getColor(3),
       percentage: calculateCompletionPercentage(highPriorityTasks),
     },
     {
       name: "Prioridade Normal",
       tasks: normalPriorityTasks,
       nTasks: normalPriorityTasks.length,
-      color: "#28A745",
+      color: getColor(2),
       percentage: calculateCompletionPercentage(normalPriorityTasks),
     },
     {
       name: "Prioridade Baixa",
       tasks: lowPriorityTasks,
       nTasks: lowPriorityTasks.length,
-      color: "#33C1FF",
+      color: getColor(1),
       percentage: calculateCompletionPercentage(lowPriorityTasks),
     },
   ];
@@ -48,6 +48,7 @@ export default function TaskPriority({ tasks }: { tasks: Task[] }) {
             color={priority.color}
             percentage={priority.percentage}
             key={index}
+            tasks={priority.tasks}
           />
         ))}
       </div>

@@ -53,7 +53,7 @@ export function ButtonBack() {
   return (
     <button
       onClick={handleClick}
-      className="flex items-center w-8 hover:bg-gray-200 rounded-full p-1 cursor-pointer transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-gray-400 active:scale-[0.98] "
+      className="dark:hover:text-black flex items-center w-8 hover:bg-gray-200 rounded-full p-1 cursor-pointer transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-gray-400 active:scale-[0.98] "
     >
       <ArrowLeftIcon />
     </button>
@@ -63,9 +63,10 @@ export function ButtonBack() {
 export function ButtonNotification() {
   return (
     <NavLink to="/notificacoes">
-      {({ isActive }) => (
+      {/*       {({ isActive }) => (
         <BellIcon className={`w-8 ${isActive ? "invisible" : ""}`} />
-      )}
+      )} */}
+      <BellIcon className="w-8 invisible" />
     </NavLink>
   );
 }

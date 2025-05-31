@@ -20,6 +20,7 @@
     "@types/swiper": "^5.4.3",
     "axios": "^1.9.0",
     "date-fns": "^4.1.0",
+    "date-fns-tz": "^3.2.0",
     "jwt-decode": "^4.0.0",
     "react": "^19.1.0",
     "react-circular-progressbar": "^2.2.0",

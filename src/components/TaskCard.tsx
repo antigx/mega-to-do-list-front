@@ -1,12 +1,10 @@
-import { ChevronDoubleRightIcon, StarIcon } from "@heroicons/react/24/outline";
+import { StarIcon } from "@heroicons/react/24/outline";
 import { StarIcon as StarIconSolid } from "@heroicons/react/24/solid";
 import type { Task } from "../types/Task";
 import { useState } from "react";
 import { useData } from "../contexts/DataContext";
 import api from "../services/api";
-import { Link } from "react-router-dom";
 import { getColor } from "../utils/getColor";
-import { CalendarIcon } from "@heroicons/react/24/outline";
 import { FlagIcon } from "@heroicons/react/24/outline";
 
 interface TaskCardProps {
@@ -76,21 +74,16 @@ export function TaskCardDash({ task }: TaskCardProps) {
 
       <TaskProgress progress={task.progress} color={color} />
 
-      <div className="flex justify-between items-center mt-2">
-        {task.remaining && (
-          <span className="text-xs text-gray-500">{task.remaining}</span>
-        )}
-        <span className="text-xs text-gray-500 dark:text-white ml-auto h-7 w-7">
-          <Link to={`/tarefa/${task.id}`}>
-            <ChevronDoubleRightIcon />
-          </Link>
-        </span>
+      <div className="flex  justify-between items-center mt-2">
+        <DeleteTaskButton taskId={task.id} />
+        <DetailsTaskButton taskId={task.id} />
       </div>
     </div>
   );
 }
 
-import { TrashIcon } from "@heroicons/react/24/outline";
+import DeleteTaskButton from "./DeleteTaksButton";
+import DetailsTaskButton from "./DetailsTaskButton";
 
 interface TaskCardProps {
   task: Task;
@@ -98,23 +91,13 @@ interface TaskCardProps {
 
 export function TaskCard({ task }: TaskCardProps) {
   const [completed, setCompleted] = useState(task.completed);
-  const [confirmDelete, setConfirmDelete] = useState(false);
   const color = getColor(task.priority);
-  const { updateTask, deleteTask } = useData();
+  const { updateTask } = useData();
 
   const toggleComplete = async () => {
     setCompleted(!completed);
     await api.put(`/tasks/${task.id}`, { ...task, completed: !task.completed });
     updateTask(task.id, { completed: !task.completed });
-  };
-
-  const handleDelete = async () => {
-    try {
-      await api.delete(`/tasks/${task.id}`);
-      deleteTask(task.id);
-    } catch (err) {
-      console.error("Erro ao deletar tarefa:", err);
-    }
   };
 
   return (
@@ -134,11 +117,7 @@ export function TaskCard({ task }: TaskCardProps) {
             aria-label={
               completed ? "Marcar como incompleta" : "Marcar como completa"
             }
-            className={`p-1 rounded-full transition-colors ${
-              completed
-                ? "text-yellow-500"
-                : "text-gray-400 hover:text-gray-600"
-            }`}
+            className="p-1 rounded-full transition-colors"
           >
             {completed ? (
               <StarIconSolid className="w-5 h-5" />
@@ -163,12 +142,12 @@ export function TaskCard({ task }: TaskCardProps) {
           </p>
         )}
         <div className="flex flex-wrap gap-3 ml-8 text-xs text-gray-500 dark:text-gray-100">
-          {task.start_date && (
+          {/*           {task.start_date && (
             <div className="flex items-center gap-1">
               <CalendarIcon className="w-3 h-3" />
               <span>Início: {formatDate(task.start_date)}</span>
             </div>
-          )}
+          )} */}
           {task.end_date && (
             <div className="flex items-center gap-1 font-medium">
               <FlagIcon className="w-3 h-3" />
@@ -178,44 +157,8 @@ export function TaskCard({ task }: TaskCardProps) {
         </div>
       </div>
       <div className="flex flex-col items-end justify-between">
-        <div className="flex gap-2 ">
-          <Link
-            to={`/tarefa/${task.id}`}
-            aria-label="Ver detalhes da tarefa"
-            className="p-1.5 rounded-full hover:bg-gray-100 transition-colors text-gray-500 hover:text-gray-700"
-            title="Ver detalhes"
-          >
-            <ChevronDoubleRightIcon className="w-5 h-5 dark:text-gray-100" />
-          </Link>
-          {!confirmDelete ? (
-            <button
-              onClick={() => setConfirmDelete(true)}
-              aria-label="Excluir tarefa"
-              className="p-1.5 rounded-full hover:bg-red-100 transition-colors"
-              title="Excluir"
-            >
-              <TrashIcon className="w-5 h-5 text-red-500" />
-            </button>
-          ) : (
-            <div className="flex items-center gap-2 bg-red-50 rounded-lg px-2 py-1">
-              <span className="text-xs text-red-600">Excluir?</span>
-              <button
-                onClick={handleDelete}
-                className="text-red-600 text-xs font-medium hover:underline"
-                aria-label="Confirmar exclusão"
-              >
-                Sim
-              </button>
-              <button
-                onClick={() => setConfirmDelete(false)}
-                className="text-gray-600 text-xs hover:underline"
-                aria-label="Cancelar exclusão"
-              >
-                Não
-              </button>
-            </div>
-          )}
-        </div>
+        <DeleteTaskButton taskId={task.id} />
+        <DetailsTaskButton taskId={task.id} />
       </div>
     </div>
   );

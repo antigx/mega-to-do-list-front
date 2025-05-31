@@ -2,10 +2,12 @@ import { StarIcon } from "@heroicons/react/24/outline";
 import { useState } from "react";
 import { CircularProgressbar, buildStyles } from "react-circular-progressbar";
 import "react-circular-progressbar/dist/styles.css";
-import { useData } from "../contexts/DataContext";
 import type { Task } from "../types/Task";
+import { getColor } from "../utils/getColor";
+import { Link } from "react-router-dom";
 
 interface PriorityGroupTask {
+  tasks: Task[];
   name: string;
   nTasks: number;
   color: string;
@@ -14,6 +16,7 @@ interface PriorityGroupTask {
 }
 
 export default function GroupTaskCard({
+  tasks,
   name,
   nTasks,
   color,
@@ -21,7 +24,6 @@ export default function GroupTaskCard({
   className = "",
 }: PriorityGroupTask) {
   const [expandedGroup, setExpandedGroup] = useState<string | null>(null);
-  const { tasks } = useData();
 
   const toggleGroup = (groupName: string) => {
     setExpandedGroup(expandedGroup === groupName ? null : groupName);
@@ -89,24 +91,29 @@ export default function GroupTaskCard({
 
 function TaskSummary({ task }: { task: Task }) {
   return (
-    <div className="p-2 m-1 bg-white rounded shadow">
-      <div className="flex justify-between">
-        <span className="font-medium truncate">{task.title}</span>
+    <Link to={`/tarefa/${task.id}`}>
+      <div
+        className="p-2 m-1 bg-white rounded shadow flex justify-between items-center"
+        style={{ backgroundColor: `${getColor(task.priority)}20` }}
+      >
+        <div className="flex flex-col justify-between">
+          <span className="font-medium truncate">{task.title}</span>{" "}
+          {task.end_date && (
+            <div className="text-xs text-gray-500">
+              Prazo: {new Date(task.end_date).toLocaleDateString()}
+            </div>
+          )}
+        </div>
         <span
           className={`text-xs px-2 py-1 rounded ${
             task.completed
-              ? "bg-green-100 text-green-800"
-              : "bg-yellow-100 text-yellow-800"
+              ? "bg-green-100 text-green-800 border border-green-800"
+              : "bg-yellow-100 text-yellow-800 border border-yellow-800"
           }`}
         >
           {task.completed ? "Concluído" : "Pendente"}
         </span>
       </div>
-      {task.end_date && (
-        <div className="text-xs text-gray-500">
-          Prazo: {new Date(task.end_date).toLocaleDateString()}
-        </div>
-      )}
-    </div>
+    </Link>
   );
 }

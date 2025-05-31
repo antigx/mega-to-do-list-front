@@ -5,7 +5,7 @@ import { Pagination, Navigation } from "swiper/modules";
 import { isToday as isDateToday } from "date-fns";
 
 import { Swiper as SwiperCore } from "swiper";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 
 import "swiper/css";
 import "swiper/css/pagination";
@@ -20,11 +20,31 @@ import { gerarDiasDoMes } from "./gerarDiasDoMes";
 export function CarouselTasks() {
   const { tasks } = useData();
   const navigate = useNavigate();
+  const [todayTaskCarousel, setTodayTaskCarousel] = useState<Task[]>();
+
+  useEffect(() => {
+    const today = new Date();
+    const todayDay = today.getDate();
+    const todayMonth = today.getMonth();
+    const todayYear = today.getFullYear();
+
+    const filtered = tasks
+      .filter((i) => {
+        const scheduled = new Date(i.end_date);
+        return (
+          scheduled.getDate() === todayDay &&
+          scheduled.getMonth() === todayMonth &&
+          scheduled.getFullYear() === todayYear
+        );
+      })
+      .filter((i) => !i.completed);
+    setTodayTaskCarousel(filtered);
+  }, [tasks]);
 
   return (
-    <div className="my-4 sm:mb-0 relative">
-      {/* Main Carousel */}
-      {tasks.filter((i) => !i.completed).length > 0 ? (
+    <div className="relative">
+      <h2 className="text-xl font-semibold py-2">Tarefas de Hoje</h2>
+      {todayTaskCarousel && todayTaskCarousel.length > 0 ? (
         <div className="overflow-visible -mx-10">
           <Swiper
             modules={[Pagination, Navigation]}
@@ -62,12 +82,10 @@ export function CarouselTasks() {
               },
             }}
           >
-            {tasks
-              .filter((i) => !i.completed)
-              .map((task: Task) => (
+            {todayTaskCarousel &&
+              todayTaskCarousel.map((task: Task) => (
                 <SwiperSlide key={task.id} className="h-auto">
                   <div className="h-full px-1">
-                    {/* Added padding for visual spacing */}
                     <TaskCardDash task={task} />
                   </div>
                 </SwiperSlide>
@@ -123,10 +141,10 @@ export function CarouselDays({
       if (selectedIndex !== -1) {
         swiperRef.current.slideTo(selectedIndex);
       } else {
-        swiperRef.current.slideTo(0); // Fallback to first day
+        swiperRef.current.slideTo(0);
       }
     }
-  }, [selectedDate, month, year]); // Added month and year as dependencies
+  }, [selectedDate, month, year]);
 
   const handleDayClick = (day: { date: Date }) => {
     onDateSelect(day.date);
@@ -142,7 +160,6 @@ export function CarouselDays({
           className="!py-4"
           onSwiper={(swiper) => {
             swiperRef.current = swiper;
-            // Initial slide to selected date
             const selectedIndex = days.findIndex(
               (day) =>
                 day.date.getDate() === selectedDate.getDate() &&
@@ -167,10 +184,10 @@ export function CarouselDays({
                   className={`flex flex-col items-center justify-center w-20 h-full p-3 rounded-xl shadow-lg cursor-pointer
                   ${
                     isActive
-                      ? "bg-gray-secondary text-white"
+                      ? "bg-gray-secondary text-white dark:border dark:border-white"
                       : isToday
                       ? "border-2 border-blue-300"
-                      : "border-2 border-gray-200/0 bg-gray-primary"
+                      : "dark:text-black border-2 border-gray-200/0 bg-gray-primary"
                   }
                   transition-all duration-200 ease-out
                   hover:shadow-md hover:scale-[1.03] hover:border-gray-secondary

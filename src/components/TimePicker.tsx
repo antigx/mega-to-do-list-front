@@ -29,7 +29,7 @@ export default function TimePicker({
     <div className="w-full flex flex-col justify-center items-center gap-5">
       <h1>Determine o tempo de foco</h1>
       <div className="flex flex-col gap-4 max-w-2/3 h-full rounded-xl bg-gray-primary p-8 shadow-md text-center space-y-4 shadow-inner">
-        <div className="flex justify-center items-center space-x-2 text-2xl font-family-body">
+        <div className="dark:text-black flex justify-center items-center space-x-2 text-2xl font-family-body">
           <input
             type="number"
             value={formatNumber(hour)}

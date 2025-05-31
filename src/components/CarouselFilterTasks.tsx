@@ -6,6 +6,7 @@ import type { TaskFilter, PriorityFilter } from "../types/Task";
 import type { Dispatch, SetStateAction } from "react";
 import { useData } from "../contexts/DataContext";
 import { ChevronDownIcon } from "@heroicons/react/24/outline";
+import { getColor } from "../utils/getColor";
 
 export function CarouselFilterTasks({
   setFilterCompleted,
@@ -77,21 +78,17 @@ export function CarouselFilterTasks({
                   setFilterPriority(Number(e.target.value) as PriorityFilter)
                 }
                 style={{
-                  backgroundColor:
-                    filterPriority === 1
-                      ? "#33C1FF"
-                      : filterPriority === 2
-                      ? "#28A745"
-                      : filterPriority === 3
-                      ? "#FF5733"
-                      : "#d9d9d9", // cor padrão (gray-primary)
+                  backgroundColor: getColor(filterPriority),
+
                   color: filterPriority !== 0 ? "white" : "inherit",
                 }}
-                className={`appearance-none flex items-center justify-center min-w-[60px] h-full py-2 pl-5 pr-8 rounded-2xl cursor-pointer
-    border-2 border-gray-200/70
-    text-xs font-medium tracking-wider
-    transition-all duration-200 ease-out
-    focus:outline-none`}
+                className={`appearance-none flex items-center bg-gray-primary
+                  justify-center min-w-[60px] h-full py-2 pl-5 
+                  pr-8 rounded-2xl cursor-pointer
+                  border-2 border-gray-200/70
+                  text-xs font-medium tracking-wider
+                  transition-all duration-200 ease-out
+                  focus:outline-none`}
                 aria-label="Filtrar por prioridade"
               >
                 {priorityOptions.map((option) => (

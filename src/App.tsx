@@ -14,7 +14,7 @@ import AddTask from "./pages/AddTask";
 import Cronometer from "./pages/Focus";
 import Achievments from "./pages/Achievments";
 import Overview from "./pages/Overview";
-import EditProfile from "./pages/EditProfile";
+import ProfileEdit from "./pages/ProfileEdit";
 import NavBarDesktop from "./components/NavBarDesktop";
 import background from "./assets/background.png";
 import backgroundDark from "./assets/background-dark.png";
@@ -55,7 +55,7 @@ function App() {
   }, [darkMode]);
   return (
     <main
-      className="h-screen w-full flex justify-center overflow-x-hidden dark:text-white md:pb-16"
+      className="h-screen w-full flex justify-center overflow-x-hidden dark:text-white pb-16 md:pb-0"
       style={{
         backgroundImage: `url(${darkMode ? backgroundDark : background})`,
         backgroundSize: "cover",
@@ -94,7 +94,7 @@ function App() {
                 <Profile darkMode={darkMode} setDarkMode={setDarkMode} />
               }
             />
-            <Route path="/editar-perfil" element={<EditProfile />} />
+            <Route path="/editar-perfil" element={<ProfileEdit />} />
             <Route path="/notificacoes" element={<Notifications />} />
             <Route path="/add-tarefas" element={<AddTask />} />
             <Route path="/foco" element={<Cronometer />} />
