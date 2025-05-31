@@ -43,7 +43,7 @@ export default function AddTask() {
 
   const handleDateChange = (
     date: Date | null,
-    field: "startDate" | "end_date"
+    field: "start_date" | "end_date"
   ) => {
     if (date) {
       setForm((prev) => ({ ...prev, [field]: date }));
@@ -108,8 +108,8 @@ export default function AddTask() {
               <div className="flex flex-col gap-6 w-full order-3 lg:order-2">
                 <DatePicker
                   selected={form.start_date}
-                  onChange={(date) => handleDateChange(date, "startDate")}
-                  customInput={<CustomDateInput label="Data de início" />}
+                  onChange={(date) => handleDateChange(date, "start_date")}
+                  customInput={<CustomDateInput label="Data de término" />}
                   dateFormat="dd MMMM, yyyy"
                   popperClassName="z-50"
                   popperPlacement="bottom-start"

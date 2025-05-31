@@ -3,6 +3,8 @@ import { createContext, useContext, useState, useEffect } from "react";
 import api from "../services/api";
 import type { Task } from "../types/Task";
 import { useNavigate } from "react-router-dom";
+import orderTasks from "../utils/orderTasks";
+import { jwtDecode } from "jwt-decode";
 
 type DataContextType = {
   tasks: Task[];
@@ -52,14 +54,16 @@ export const DataProvider = ({ children }: { children: React.ReactNode }) => {
 
   // Função para adicionar uma tarefa
   const addTask = (task: Task) => {
-    setTasks([...tasks, task]);
+    const orderedTasks = orderTasks([...tasks, task]);
+    setTasks(orderedTasks);
   };
 
   // Função para atualizar uma tarefa
   const updateTask = (id: string, updatedTask: Partial<Task>) => {
-    setTasks(
+    const orderedTasks = orderTasks(
       tasks.map((task) => (task.id === id ? { ...task, ...updatedTask } : task))
     );
+    setTasks(orderedTasks);
   };
 
   // Função para deletar uma tarefa
@@ -80,7 +84,8 @@ export const DataProvider = ({ children }: { children: React.ReactNode }) => {
       }
 
       const response = await api.get<Task[]>("/tasks");
-      setTasks(response.data);
+      const orderedTasks = orderTasks(response.data);
+      setTasks(orderedTasks);
     } catch (err: any) {
       console.error("Erro ao buscar tarefas:", err);
 
@@ -92,6 +97,7 @@ export const DataProvider = ({ children }: { children: React.ReactNode }) => {
     }
   };
 
+  //excluir todas as tasks marcadas com completed
   const deleteCompletedTasks = async () => {
     const confirmed = window.confirm(
       "Tem certeza que deseja deletar todas as tarefas concluídas? Essa ação não pode ser desfeita."
@@ -108,7 +114,7 @@ export const DataProvider = ({ children }: { children: React.ReactNode }) => {
       }
     }
   };
-  // erros de autenticação global
+
   useEffect(() => {
     const responseInterceptor = api.interceptors.response.use(
       (response) => response,

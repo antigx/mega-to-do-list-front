@@ -4,11 +4,9 @@ import { useState } from "react";
 
 export default function TaskPriority({ tasks }: { tasks: Task[] }) {
   // Group tasks by priority
-  const highPriorityTasks = tasks.filter((task) => Number(task.priority) === 3);
-  const normalPriorityTasks = tasks.filter(
-    (task) => Number(task.priority) === 2
-  );
-  const lowPriorityTasks = tasks.filter((task) => Number(task.priority) === 1);
+  const highPriorityTasks = tasks.filter((task) => task.priority === 3);
+  const normalPriorityTasks = tasks.filter((task) => task.priority === 2);
+  const lowPriorityTasks = tasks.filter((task) => task.priority === 1);
 
   const [expandedGroup, setExpandedGroup] = useState<string | null>(null);
 

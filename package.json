@@ -20,6 +20,7 @@
     "@types/swiper": "^5.4.3",
     "axios": "^1.9.0",
     "date-fns": "^4.1.0",
+    "jwt-decode": "^4.0.0",
     "react": "^19.1.0",
     "react-circular-progressbar": "^2.2.0",
     "react-color": "^2.19.3",
@@ -32,6 +33,7 @@
   "devDependencies": {
     "@eslint/js": "^9.25.0",
     "@types/axios": "^0.9.36",
+    "@types/jwt-decode": "^2.2.1",
     "@types/react": "^19.1.2",
     "@types/react-color": "^3.0.13",
     "@types/react-datepicker": "^6.2.0",

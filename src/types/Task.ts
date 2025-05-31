@@ -5,7 +5,7 @@ export interface Task {
   title: string;
   description?: string | null;
   date?: Date | null;
-  priority?: string | null;
+  priority: number;
   user_id: string;
   created_at: Date | null;
   updated_at: Date | null;
@@ -16,3 +16,7 @@ export interface Task {
   end_date: Date;
   completed: boolean;
 }
+
+export type TaskFilter = "all" | "pending" | "done";
+
+export type PriorityFilter = 0 | 1 | 2 | 3; // 0 = Todas, 3 = Alta, 2 = Normal, 1 = Baixa

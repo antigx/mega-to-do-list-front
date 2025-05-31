@@ -8,27 +8,107 @@ import {
   CheckCircleIcon,
   ArrowLeftIcon,
 } from "@heroicons/react/24/outline";
-import { getColor } from "../components/TaskCard";
+import { getColor } from "../utils/getColor";
+import api from "../services/api";
 
 export default function TaskDetails() {
   const { id } = useParams<{ id: string }>();
-  const { tasks } = useData();
+  const { tasks, updateTask } = useData(); // Usando updateTask do contexto
   const [task, setTask] = useState<Task | null>(null);
+  const [isEditing, setIsEditing] = useState(false);
+  const [editedTask, setEditedTask] = useState<Task | null>(null);
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
   const navigate = useNavigate();
 
   useEffect(() => {
     if (id) {
       const foundTask = tasks.find((t) => t.id === id);
-      setTask(foundTask || null);
+      if (foundTask) {
+        setTask(foundTask);
+        setEditedTask({ ...foundTask });
+      } else {
+        fetchTaskFromAPI();
+      }
     }
   }, [id, tasks]);
+
+  const fetchTaskFromAPI = async () => {
+    setIsLoading(true);
+    try {
+      const response = await api.get(`/tasks/${id}`);
+      setTask(response.data as Task);
+      setEditedTask(response.data as Task);
+    } catch (err) {
+      setError("Falha ao carregar tarefa");
+      console.error(err);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const handleSave = async () => {
+    if (!editedTask || !id) return;
+
+    setIsLoading(true);
+    setError(null);
+
+    try {
+      // 1. Enviar para a API
+      const response = await api.put(`/tasks/${id}`, editedTask);
+
+      // 2. Atualizar o contexto usando updateTask
+      updateTask(id, response.data as Partial<Task>);
+
+      // 3. Atualizar o estado local
+      setTask(response.data as Task);
+
+      // 4. Sair do modo de edição
+      setIsEditing(false);
+    } catch (err) {
+      setError("Falha ao salvar tarefa");
+      console.error(err);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const handleDiscard = () => {
+    if (task) {
+      setEditedTask({ ...task });
+    }
+    setIsEditing(false);
+    setError(null);
+  };
+
+  const handleChange = (field: keyof Task, value: any) => {
+    if (field === "priority") value = Number(value);
+    if (editedTask) {
+      setEditedTask({
+        ...editedTask,
+        [field]: value,
+      });
+    }
+  };
+
+  if (isLoading) {
+    return (
+      <div className="flex items-center justify-center min-h-[calc(100vh-4rem)] p-4">
+        <div className="bg-white rounded-xl shadow-sm p-6 max-w-md w-full text-center border border-gray-100">
+          <h2 className="text-xl font-semibold text-gray-800 mb-4">
+            Carregando...
+          </h2>
+        </div>
+      </div>
+    );
+  }
 
   if (!task) {
     return (
       <div className="flex items-center justify-center min-h-[calc(100vh-4rem)] p-4">
         <div className="bg-white rounded-xl shadow-sm p-6 max-w-md w-full text-center border border-gray-100">
           <h2 className="text-xl font-semibold text-gray-800 mb-4">
-            Tarefa não encontrada
+            {error || "Tarefa não encontrada"}
           </h2>
           <button
             onClick={() => navigate(-1)}
@@ -41,15 +121,17 @@ export default function TaskDetails() {
     );
   }
 
-  const priorityColor = getColor(Number(task.priority));
+  const priorityColor = getColor(
+    Number(isEditing ? editedTask?.priority : task.priority)
+  );
 
-  const getPriorityText = () => {
-    switch (task.priority) {
-      case "1":
+  const getPriorityText = (priority: number) => {
+    switch (priority) {
+      case 1:
         return "Baixa";
-      case "2":
+      case 2:
         return "Normal";
-      case "3":
+      case 3:
         return "Alta";
       default:
         return "Desconhecida";
@@ -61,8 +143,8 @@ export default function TaskDetails() {
       <div
         className="rounded-xl shadow-sm w-full max-w-2xl overflow-hidden transition-all duration-200"
         style={{
-          backgroundColor: `${priorityColor}10`,
-          border: `1px solid ${priorityColor}20`,
+          backgroundColor: `${priorityColor}30`,
+          border: `1px solid ${priorityColor}40`,
         }}
       >
         {/* Header */}
@@ -77,12 +159,22 @@ export default function TaskDetails() {
           >
             <ArrowLeftIcon className="h-5 w-5" />
           </button>
-          <h1
-            className="text-xl font-bold text-center text-gray-800 truncate max-w-[70%] mx-auto"
-            style={{ color: priorityColor }}
-          >
-            {task.title}
-          </h1>
+          {isEditing ? (
+            <input
+              type="text"
+              value={editedTask?.title || ""}
+              onChange={(e) => handleChange("title", e.target.value)}
+              className="text-xl font-bold text-center w-full max-w-[70%] mx-auto bg-transparent border-b border-gray-300 focus:outline-none focus:border-indigo-500"
+              style={{ color: priorityColor }}
+            />
+          ) : (
+            <h1
+              className="text-xl font-bold text-center text-gray-800 truncate max-w-[70%] mx-auto"
+              style={{ color: priorityColor }}
+            >
+              {task.title}
+            </h1>
+          )}
         </div>
 
         {/* Body */}
@@ -90,24 +182,44 @@ export default function TaskDetails() {
           className="p-6 space-y-6"
           style={{ backgroundColor: `${priorityColor}05` }}
         >
+          {error && (
+            <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded">
+              {error}
+            </div>
+          )}
+
           {/* Descrição */}
           <section>
             <h2 className="text-xs font-semibold text-gray-600 uppercase tracking-wider mb-2">
               Descrição
             </h2>
-            <div
-              className="text-gray-700 p-4 rounded-lg border shadow-xs"
-              style={{
-                backgroundColor: `${priorityColor}08`,
-                borderColor: `${priorityColor}15`,
-              }}
-            >
-              {task.description || (
-                <span className="text-gray-500">
-                  Nenhuma descrição fornecida
-                </span>
-              )}
-            </div>
+            {isEditing ? (
+              <textarea
+                value={editedTask?.description || ""}
+                onChange={(e) => handleChange("description", e.target.value)}
+                className="w-full text-gray-700 p-4 rounded-lg border shadow-xs focus:outline-none focus:ring-1 focus:ring-indigo-500"
+                style={{
+                  backgroundColor: `${priorityColor}08`,
+                  borderColor: `${priorityColor}15`,
+                  minHeight: "100px",
+                }}
+                placeholder="Adicione uma descrição..."
+              />
+            ) : (
+              <div
+                className="text-gray-700 p-4 rounded-lg border shadow-xs"
+                style={{
+                  backgroundColor: `${priorityColor}08`,
+                  borderColor: `${priorityColor}15`,
+                }}
+              >
+                {task.description || (
+                  <span className="text-gray-500">
+                    Nenhuma descrição fornecida
+                  </span>
+                )}
+              </div>
+            )}
           </section>
 
           {/* Grid de Infos */}
@@ -120,12 +232,28 @@ export default function TaskDetails() {
                 />
               }
               label="Data de Início"
-              value={new Date(task.end_date).toLocaleDateString("pt-BR", {
-                day: "numeric",
-                month: "long",
-                year: "numeric",
-              })}
+              value={
+                isEditing ? (
+                  <input
+                    type="date"
+                    value={
+                      editedTask?.start_date.toString().split("T")[0] || ""
+                    }
+                    onChange={(e) =>
+                      handleChange("start_date", new Date(e.target.value))
+                    }
+                    className="bg-transparent border-b border-gray-300 focus:outline-none focus:border-indigo-500"
+                  />
+                ) : (
+                  new Date(task.start_date).toLocaleDateString("pt-BR", {
+                    day: "numeric",
+                    month: "long",
+                    year: "numeric",
+                  })
+                )
+              }
               color={priorityColor}
+              isEditing={isEditing}
             />
             <InfoItem
               icon={
@@ -135,12 +263,31 @@ export default function TaskDetails() {
                 />
               }
               label="Data de Término"
-              value={new Date(task.end_date).toLocaleDateString("pt-BR", {
-                day: "numeric",
-                month: "long",
-                year: "numeric",
-              })}
+              value={
+                isEditing ? (
+                  <input
+                    type="date"
+                    value={editedTask?.end_date?.toString().split("T")[0] || ""}
+                    onChange={(e) =>
+                      handleChange(
+                        "end_date",
+                        e.target.value ? new Date(e.target.value) : null
+                      )
+                    }
+                    className="bg-transparent border-b border-gray-300 focus:outline-none focus:border-indigo-500"
+                  />
+                ) : task.end_date ? (
+                  new Date(task.end_date).toLocaleDateString("pt-BR", {
+                    day: "numeric",
+                    month: "long",
+                    year: "numeric",
+                  })
+                ) : (
+                  "Não definida"
+                )
+              }
               color={priorityColor}
+              isEditing={isEditing}
             />
             <InfoItem
               icon={
@@ -150,8 +297,23 @@ export default function TaskDetails() {
                 />
               }
               label="Prioridade"
-              value={getPriorityText()}
+              value={
+                isEditing ? (
+                  <select
+                    value={editedTask?.priority || "2"}
+                    onChange={(e) => handleChange("priority", e.target.value)}
+                    className="bg-transparent border-b border-gray-300 focus:outline-none focus:border-indigo-500"
+                  >
+                    <option value={1}>Baixa</option>
+                    <option value={2}>Normal</option>
+                    <option value={3}>Alta</option>
+                  </select>
+                ) : (
+                  getPriorityText(task.priority ?? 2)
+                )
+              }
               color={priorityColor}
+              isEditing={isEditing}
             />
             <InfoItem
               icon={
@@ -161,32 +323,78 @@ export default function TaskDetails() {
                 />
               }
               label="Status"
-              value={task.completed ? "Concluída" : "Pendente"}
+              value={
+                isEditing ? (
+                  <select
+                    value={editedTask?.completed ? "true" : "false"}
+                    onChange={(e) =>
+                      handleChange("completed", e.target.value === "true")
+                    }
+                    className="bg-transparent border-b border-gray-300 focus:outline-none focus:border-indigo-500"
+                  >
+                    <option value="false">Pendente</option>
+                    <option value="true">Concluída</option>
+                  </select>
+                ) : task.completed ? (
+                  "Concluída"
+                ) : (
+                  "Pendente"
+                )
+              }
               color={task.completed ? "text-green-600" : priorityColor}
+              isEditing={isEditing}
             />
           </section>
 
           {/* Ações */}
           <div className="flex flex-col-reverse sm:flex-row justify-end gap-3 pt-4">
-            <button
-              onClick={() => navigate(-1)}
-              className="px-4 py-2 border rounded-lg text-gray-700 hover:bg-white transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2"
-              style={{
-                borderColor: `${priorityColor}30`,
-                backgroundColor: `${priorityColor}10`,
-              }}
-            >
-              Voltar
-            </button>
-            <button
-              onClick={() => navigate(`/editar-tarefa/${task.id}`)}
-              className="px-4 py-2 text-white rounded-lg hover:opacity-90 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2"
-              style={{
-                backgroundColor: priorityColor,
-              }}
-            >
-              Editar Tarefa
-            </button>
+            {isEditing ? (
+              <>
+                <button
+                  onClick={handleDiscard}
+                  disabled={isLoading}
+                  className="px-4 py-2 border rounded-lg text-gray-700 hover:bg-white transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 disabled:opacity-50"
+                  style={{
+                    borderColor: `${priorityColor}30`,
+                    backgroundColor: `${priorityColor}10`,
+                  }}
+                >
+                  Descartar
+                </button>
+                <button
+                  onClick={handleSave}
+                  disabled={isLoading}
+                  className="px-4 py-2 text-white rounded-lg hover:opacity-90 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 disabled:opacity-50"
+                  style={{
+                    backgroundColor: priorityColor,
+                  }}
+                >
+                  {isLoading ? "Salvando..." : "Salvar"}
+                </button>
+              </>
+            ) : (
+              <>
+                <button
+                  onClick={() => navigate(-1)}
+                  className="px-4 py-2 border rounded-lg text-gray-700 hover:bg-white transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2"
+                  style={{
+                    borderColor: `${priorityColor}30`,
+                    backgroundColor: `${priorityColor}10`,
+                  }}
+                >
+                  Voltar
+                </button>
+                <button
+                  onClick={() => setIsEditing(true)}
+                  className="px-4 py-2 text-white rounded-lg hover:opacity-90 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2"
+                  style={{
+                    backgroundColor: priorityColor,
+                  }}
+                >
+                  Editar Tarefa
+                </button>
+              </>
+            )}
           </div>
         </div>
       </div>
@@ -200,11 +408,13 @@ function InfoItem({
   label,
   value,
   color = "#4b5563",
+  isEditing = false,
 }: {
   icon: React.ReactNode;
   label: string;
-  value: string;
+  value: React.ReactNode;
   color?: string | any;
+  isEditing?: boolean;
 }) {
   return (
     <div
@@ -218,14 +428,18 @@ function InfoItem({
         {icon}
         <span className="font-medium">{label}</span>
       </div>
-      <p
+      <div
         className={`text-sm font-semibold mt-1 ${
-          typeof color === "string" && color.startsWith("text-") ? color : ""
+          isEditing
+            ? ""
+            : typeof color === "string" && color.startsWith("text-")
+            ? color
+            : ""
         }`}
-        style={!color.startsWith("text-") ? { color } : {}}
+        style={!isEditing && !color.startsWith("text-") ? { color } : {}}
       >
         {value}
-      </p>
+      </div>
     </div>
   );
 }

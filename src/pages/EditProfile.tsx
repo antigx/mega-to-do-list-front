@@ -37,13 +37,7 @@ export default function EditProfile() {
               name={"email"}
               onChange={handleChange}
             />
-            <InputSign
-              text={"Número de Telefone"}
-              type={"te"}
-              id={"name"}
-              name={"name"}
-              onChange={handleChange}
-            />
+
             <InputSign
               text={"Senha"}
               type={"password"}

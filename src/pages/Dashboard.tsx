@@ -5,12 +5,16 @@ import { CarouselTasks } from "../components/Carousels";
 import { ButtonNotification } from "../components/Button";
 import { NavLink } from "react-router-dom";
 import { useData } from "../contexts/DataContext";
+import { useState } from "react";
+import AllTasks from "../components/AllTasks";
 
 export default function Dashboard() {
   const { tasks, loading, error } = useData();
+  const [searching, setSearching] = useState<boolean>(false);
+
   return (
     <div className="md:p-4">
-      <div className="flex justify-between pt-4">
+      <div className="flex justify-between py-4">
         <NavLink
           to="/perfil"
           className="flex items-center gap-4 hover:opacity-80 transition-opacity"
@@ -29,8 +33,10 @@ export default function Dashboard() {
         </NavLink>
         <ButtonNotification />
       </div>
-
-      {loading ? (
+      <AllTasks searching={searching} setSearching={setSearching} />
+      {searching ? (
+        ""
+      ) : loading ? (
         <div className="mt-4 text-center">Loading tasks...</div>
       ) : error ? (
         <div className="mt-4 text-red-500">{error}</div>

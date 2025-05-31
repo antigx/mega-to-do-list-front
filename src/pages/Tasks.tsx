@@ -1,19 +1,14 @@
 import { useMemo, useState } from "react";
-import {
-  CarouselDays,
-  CarouselFilterTasks,
-  type TaskFilter,
-} from "../components/Carousels";
-import { TaskCard } from "../components/TaskCard";
-import type { Task } from "../types/Task";
+import { CarouselDays } from "../components/Carousels";
 import Header from "../components/Header";
 import { ChevronLeftIcon, ChevronRightIcon } from "@heroicons/react/24/outline";
-import { useData } from "../contexts/DataContext";
+
+import AllTasks from "../components/AllTasks";
+
+type ViewMode = "all" | "byDate";
 
 export default function Tasks() {
-  const { tasks, loading, error } = useData();
-
-  const [filter, setFilter] = useState<TaskFilter>("all");
+  const [viewMode, setViewMode] = useState<ViewMode>("all"); // Estado para controlar a view
   const [selectedDate, setSelectedDate] = useState<Date>(new Date());
   const [currentMonth, setCurrentMonth] = useState<number>(
     new Date().getMonth() + 1
@@ -62,127 +57,69 @@ export default function Tasks() {
     );
   }, [currentMonth, currentYear]);
 
-  const filteredTasks = useMemo(() => {
-    if (!tasks) return undefined;
-
-    // First filter by date
-    const dateFilteredTasks = tasks.filter((task) => {
-      if (!task.end_date) return false;
-      const taskDate = new Date(task.end_date);
-      return (
-        taskDate.getDate() === selectedDate.getDate() &&
-        taskDate.getMonth() === selectedDate.getMonth() &&
-        taskDate.getFullYear() === selectedDate.getFullYear()
-      );
-    });
-
-    // Then apply status filter if needed
-    switch (filter) {
-      case "pending":
-        return dateFilteredTasks.filter((task) => task.completed === false);
-      case "done":
-        return dateFilteredTasks.filter((task) => task.completed === true);
-
-      default:
-        return dateFilteredTasks;
-    }
-  }, [filter, tasks, selectedDate]);
-
   return (
     <>
-      <Header text="Tarefas do Dia" />
+      <Header
+        text={viewMode === "all" ? "Todas as Tarefas" : "Tarefas por Dia"}
+      />
 
-      {/* Controle de mês */}
-      <div className="flex items-center justify-between mb-4">
+      <div className="flex border-b border-gray-200 mb-4">
         <button
-          onClick={() => changeMonth("prev")}
-          className="p-2 rounded-full hover:bg-gray-100"
+          className={`py-2 px-4 font-medium text-sm focus:outline-none ${
+            viewMode === "byDate"
+              ? "border-b-2 border-blue-500 text-blue-600"
+              : "text-gray-500 hover:text-gray-700"
+          }`}
+          onClick={() => setViewMode("byDate")}
         >
-          <ChevronLeftIcon className="h-5 w-5 text-gray-600" />
+          Por Data
         </button>
-
-        <h2 className="text-xl font-semibold text-gray-800 capitalize">
-          {monthName}
-        </h2>
-
         <button
-          onClick={() => changeMonth("next")}
-          className="p-2 rounded-full hover:bg-gray-100"
+          className={`py-2 px-4 font-medium text-sm focus:outline-none ${
+            viewMode === "all"
+              ? "border-b-2 border-blue-500 text-blue-600"
+              : "text-gray-500 hover:text-gray-700"
+          }`}
+          onClick={() => setViewMode("all")}
         >
-          <ChevronRightIcon className="h-5 w-5 text-gray-600" />
+          Todas
         </button>
       </div>
 
-      <CarouselDays
-        month={currentMonth}
-        year={currentYear}
-        onDateSelect={handleDateSelect}
-        selectedDate={selectedDate}
-      />
-
-      <CarouselFilterTasks setFilter={setFilter} currentFilter={filter} />
-
-      <section className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mt-4">
-        {loading ? (
-          <div className="col-span-full flex justify-center items-center py-12">
-            <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500"></div>
-          </div>
-        ) : error ? (
-          <div className="col-span-full bg-red-50 border-l-4 border-red-500 p-4">
-            <div className="flex">
-              <div className="flex-shrink-0">
-                <svg
-                  className="h-5 w-5 text-red-500"
-                  fill="currentColor"
-                  viewBox="0 0 20 20"
-                >
-                  <path
-                    fillRule="evenodd"
-                    d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z"
-                    clipRule="evenodd"
-                  />
-                </svg>
-              </div>
-              <div className="ml-3">
-                <p className="text-sm text-red-700">{error}</p>
-              </div>
-            </div>
-          </div>
-        ) : filteredTasks && filteredTasks.length > 0 ? (
-          filteredTasks.map((task: Task) => (
-            <TaskCard key={task.id} task={task} />
-          ))
-        ) : (
-          <div className="col-span-full flex flex-col items-center justify-center py-12 px-4 text-center">
-            <svg
-              className="w-16 h-16 text-gray-400 mb-4"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-              xmlns="http://www.w3.org/2000/svg"
+      {/* Mostra os controles de data apenas no modo "Por Data" */}
+      {viewMode === "byDate" && (
+        <>
+          {/* Controle de mês */}
+          <div className="flex items-center justify-between mb-4">
+            <button
+              onClick={() => changeMonth("prev")}
+              className="p-2 rounded-full hover:bg-gray-100"
             >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={1.5}
-                d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"
-              />
-            </svg>
-            <h3 className="text-lg font-medium text-gray-900 mb-1">
-              Nenhuma tarefa encontrada
-            </h3>
-            <p className="text-gray-500 max-w-md">
-              Não há tarefas agendadas para{" "}
-              {selectedDate.toLocaleDateString("pt-BR", {
-                weekday: "long",
-                day: "numeric",
-                month: "long",
-              })}
-              .
-            </p>
+              <ChevronLeftIcon className="h-5 w-5 text-gray-600" />
+            </button>
+
+            <h2 className="text-xl font-semibold text-gray-800 capitalize">
+              {monthName}
+            </h2>
+
+            <button
+              onClick={() => changeMonth("next")}
+              className="p-2 rounded-full hover:bg-gray-100"
+            >
+              <ChevronRightIcon className="h-5 w-5 text-gray-600" />
+            </button>
           </div>
-        )}
-      </section>
+
+          <CarouselDays
+            month={currentMonth}
+            year={currentYear}
+            onDateSelect={handleDateSelect}
+            selectedDate={selectedDate}
+          />
+        </>
+      )}
+
+      <AllTasks viewMode={viewMode} selectedDate={selectedDate} />
     </>
   );
 }
